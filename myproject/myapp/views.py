@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,HttpResponse
 from .models import *
 # Create your views here.
 def root(request):
-
+    print('asdas')
     return render(request,'main.html')
 
 def registration(request):
