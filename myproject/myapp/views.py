@@ -8,8 +8,6 @@ def root(request):
 def registration(request):
     return render(request,'registration.html')
 
-    return render(request,'form.html')
-
 
 def login(request):
     user=get_user_by_id(request.POST['email'],request.POST['password'])
