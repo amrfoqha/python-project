@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center">
+        <a href="" class="ml-[25px] text-[#fff] text-[25px] font-[700]" ><h1>CareerPilot</h1></a>
+        <div class="mr-[25px] text-[#fff] flex justify-between w-[300px]">
+            <a href="">Contact us</a>
+            <a href="">Who we are</a>
+            <a href="">Home</a>
+        </div>
+    </div>
+    <form action="login" method="POST">
+        {% csrf_token %}
+        <div class="flex justify-center items-center mt-[10%] ">
+            <div class="h-[400px] w-[400px]  bg-[#ffffff] shadow-[1px_1px_10px] rounded-[5px] shadow-[#aba3a3] p-[25px]" >
+                <h1 class="text-[#1e3a8a] text-[25px] font-[700] text-center ">Log in</h1>
+                <div class="ml-[15px] mt-[25px]">
+                    <label class="block" for="">e-mail</label>
+                    <input class="mt-[15px] w-[80%] h-[30px] border-2 border-[#aba3a3]" type="email" placeholder="example@email.com" name="email">
+                </div>
+                <div class="ml-[15px] mt-[25px]">
+                    <label class="block" for="">password</label>
+                    <input class="mt-[15px] w-[80%] h-[30px] border-2 border-[#aba3a3]" type="password" placeholder="Enter your password" name="password">
+                </div>
+                <div class="flex justify-center ">
+                    <input type="submit" name="login" value="Log in" class="ml-[15px] mt-[25px] bg-[#1d4ed8] text-[#fff] w-[90%] h-[45px] shadow-[1px_1px_10px] rounded-[5px] shadow-[#aba3a3] mr-[10px] cursor-pointer ">
+                </div>
+                <h1 class="mt-[25px] text-center"><a href="" class="text-[#4f7eee]">Register now</a>Don't have an account?</h1>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
