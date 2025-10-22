@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerPilot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center px-16">
+        <a href="" class="ml-[25px] text-[#fff] text-[25px]">
+            <h1>CareerPilot</h1>
+        </a>
+        <div class="mr-[25px] text-[#fff] flex justify-between w-[300px]">
+            <a href="">Contact us</a>
+            <a href="">Who we are</a>
+            <a href="">Home</a>
+        </div>
+    </div>
+    <form action="" method="post"
+        class=" mt-20 rounded-[5px] shadow-[1px_1px_10px] shadow-[#d6c8c8bb] w-1/4 p-5 pl-10 ml-[38%] text-2xl font-light">
+        <h1 class="text-center text-[#1e3a8a] font-medium">Create a new account</h1>
+        <div class="mt-2 ml-5"><label for="first_name" class="block text-xl ">First Name:</label><input
+                class="border-[1px] rounded-[5px] mt-2 w-5/6 pl-2 text-xl h-10 border-[#d6c8c8bb]" type="text"
+                name="first_name" id="" placeholder="amr" required>
+        </div>
+        <div class="mt-2 ml-5"><label for="last_name" class="block text-xl">Last Name:</label><input
+                class="border-[1px] rounded-[5px] mt-2 w-5/6 pl-2 text-xl h-10 border-[#d6c8c8bb]" type="text"
+                name="last_name" id="" placeholder="foqha" required>
+        </div>
+        <div class="mt-2 ml-5"><label for="email" class="block text-xl">Email:</label><input
+                class="border-[1px] rounded-[5px] mt-2 w-5/6 pl-2 text-xl h-10 border-[#d6c8c8bb]" type="email"
+                name="email" id="" placeholder="example@gmail.com" required>
+        </div>
+        <div class="mt-2 ml-5 "><label for="password" class="block text-xl">Password:</label><input
+                class="border-[1px] rounded-[5px] mt-2 w-5/6 pl-2 text-xl h-10 border-[#d6c8c8bb]" type="password"
+                name="password" id="" required>
+        </div>
+        <div class="mt-2 ml-5"><label for="con_password" class="block text-xl">Confirm Password:</label><input
+                class="border-[1px] rounded-[5px] mt-2 w-5/6 pl-2 text-xl h-10 border-[#d6c8c8bb]" type="password"
+                name="con_password" id="" required>
+        </div>
+        <div class="mt-2 ml-5"><label for="first name" class="block text-xl">Location:</label><select name="location"
+                id="" class="border-[1px] h-10 rounded-[5px] mt-2 w-5/6 pl-2 text-xl border-[#d6c8c8bb]" required>
+                <option value="Nablus">Nablus</option>
+                <option value="Ramallah">Ramallah</option>
+                <option value="Tulkarem">Tulkarem</option>
+                <option value="heborn">heborn</option>
+                <option value="jericho">jericho</option>
+                <option value="Jenin">Jenin</option>
+
+            </select>
+        </div>
+        <input type="submit" value="Create an account"
+            class="ml-[15px] mt-[25px] bg-[#1d4ed8] text-[#fff] w-[90%] h-[45px] shadow-[1px_1px_10px] rounded-[5px] shadow-[#aba3a3] mr-[10px] cursor-pointer">
+        <p class="mt-2 text-[16px] text-center">already have an account ? login in <a href=""
+                class="text-blue-800 hover:text-blue-400">here</a>
+        </p>
+    </form>
+</body>
+
+</html>
