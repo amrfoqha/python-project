@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center">
+        <a href="" class="ml-[25px] text-[#fff] text-[25px] font-[700]" ><h1>CareerPilot</h1></a>
+        <div class="mr-[25px] text-[#fff] flex justify-between w-[300px]">
+            <a href="">Contact us</a>
+            <a href="">Who we are</a>
+            <a href="">Home</a>
+        </div>
+    </div>
+    <div class="ml-[25px] mt-[25px]">
+        <h1 class="text-3xl font-[600] ">Career Application Form</h1>
+        <h1 class="text-[#474141]">Choose your application method: Detailed form or CV upload</h1>
+    </div>
+    <div class="flex justify-center mt-[25px]">
+        <div class="flex justify-around items-center w-[650px] " >
+            <input type="submit" name="form" class="bg-black h-[40px] w-[300px]">
+            <input type="submit" name="cv" class="bg-black h-[40px] w-[300px]">
+        </div>
+    </div>
+</body>
+</html>
