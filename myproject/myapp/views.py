@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 # Create your views here.
 def root(request):
-    return render(request,'main.html')
+    return render(request,'registration.html')
+
+def registration(request):
+    return render(request,'registration.html')
