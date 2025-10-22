@@ -4,6 +4,14 @@ from django.contrib import messages
 import bcrypt
 
 class UserManager(models.Manager):
+    def validator_login(self, postData):
+        errors = {}
+        if len(postData['email'])<=0:
+            errors['email'] = "email must be filed"
+        else:
+            pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')
+            if not pattern.match(postData['email']):
+                errors['email'] = 'email is invalid'
     def validator_reg(self, postData):
         errors = {}
         if len(postData['first_name']) <= 0 :
@@ -46,6 +54,7 @@ class Result(models.Model):
 
 def get_user_by_id(email,password):
     return User.objects.get(email=email,password=password)
+
 
 
 def create_user(first_name, last_name, email,phone,location, password,level):
