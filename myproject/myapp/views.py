@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect,HttpResponse
 from .models import *
 # Create your views here.
 def root(request):
-
-    return render(request,'registration.html')
+    print('asdas')
+    return render(request,'main.html')
 
 def registration(request):
     return render(request,'registration.html')
