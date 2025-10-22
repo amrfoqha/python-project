@@ -1,23 +1,18 @@
 import re
 from django.db import models
 class UserManager(models.Manager):
-    def basic_validator(self, postData):
+    def validator_login(self, postData):
         errors = {}
-        if len(postData['first_name'])=="":
-            errors['first_name'] = "first_name empity"
-        if len(postData['last_name'])=="":
-            errors['last_name']="last_name empity"
-        pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')
-        if not pattern.match(postData['reg_email']):
-            errors['invalid_email'] = 'email is invalid'
-        if len(postData['phone'])<10:
-            errors['phone'] = "shode be 10 numper"
-        if len(postData['location'])=="":
-            errors['location'] = "location empity"
-        if len(postData['password'])<8:
-            errors['password'] = "shode be 8ch"
-        if len(postData['level'])=="":
-            errors['level'] = "level empity"
+        if len(postData['email'])<=0:
+            errors['email'] = "email must be filed"
+        else:
+            pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')
+            if not pattern.match(postData['email']):
+                errors['email'] = 'email is invalid'
+        if len(postData['password'])==0:
+            errors['password']='password should be filled'
+        elif len(postData['password'])<8:
+            errors['password'] = "should be at least 8 characters"
         return errors
 
 # Create your models here.
@@ -42,5 +37,7 @@ def get_user_by_id(email,password):
     return User.objects.get(email=email,password=password)
 
 
+
 def create_user(first_name, last_name, email,phone,location, password,level):
     User.objects.create(first_name=first_name,last_name=last_name, email=email, phone=phone,location=location, password=password,level=level)
+
