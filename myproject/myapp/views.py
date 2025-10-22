@@ -2,6 +2,7 @@ from django.shortcuts import render,HttpResponse
 from .models import *
 # Create your views here.
 def root(request):
+    print('ahmad_badwan')
     return render(request,'form.html')
 
 
