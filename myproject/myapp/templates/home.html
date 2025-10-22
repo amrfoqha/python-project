@@ -1,52 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareerPilot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}" />
-  </head>
-  <body>
+</head>
+
+<body>
     {% comment %} this is our navigation bar start {% endcomment %}
-    <nav class="bg-[#1e3a8a] text-black p-4">
-        <div class="container mx-auto flex justify-between">
-            <div class="text-lg font-bold">CareerPilot
-                </div>
-                <div>
-                    <a href="#" class="px-3 hover:text-gray-300">Home</a>
-                    <a href="#" class="px-3 hover:text-gray-300">About</a>
-                    <a href="#" class="px-3 hover:text-gray-300">Login</a>
-                </div>
+    <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center px-16">
+        <a href="/" class="ml-[25px] text-[#fff] text-[25px] font-[700]">
+            <h1>CareerPilot</h1>
+        </a>
+        <div class="mr-[25px] text-[#fff] flex justify-between w-[300px]">
+            <a href="">Contact us</a>
+            <a href="">Who we are</a>
+            <a href="">Home</a>
         </div>
-    </nav>
-    {% comment %} this is our navigation bar end {% endcomment %} 
+    </div>
+    {% comment %} this is our navigation bar end {% endcomment %}
 
     {% comment %}Welcome to our CareerPilot {% endcomment %}
-        <div class="bg-[#1d2a4e] text-white text-center py-20">
-            <h1 class="text-5xl font-bold mb-4">
-                Start Your Career Journey with CareerPilot
-            </h1>
-            <p class="text-xl mb-8">
-                A comprehensive platform that helps you discover your career path and
-                develop your skills to reach your dream job
-            </p>
-            <a href="#" class="bg-white text-blue-500 font-bold py-2 px-4 rounded"
-                >Get Started
-            </a>
-        </div>
-{% comment %} this is our Welcome end {% endcomment %}
-{% comment %} this is our services start {% endcomment %}
+    <div class="bg-[#1d2a4e] text-white text-center py-20">
+        <h1 class="text-5xl font-bold mb-4">
+            Start Your Career Journey with CareerPilot
+        </h1>
+        <p class="text-xl mb-8">
+            A comprehensive platform that helps you discover your career path and
+            develop your skills to reach your dream job
+        </p>
+        <a href="/view_login" class="bg-white text-blue-500 font-bold py-2 px-4 rounded">Get Started
+        </a>
+    </div>
+    {% comment %} this is our Welcome end {% endcomment %}
+    {% comment %} this is our services start {% endcomment %}
     <div class="bg-gray-200 text-center py-20">
-                <h2 class="text-3xl font-bold mb-12">How Can We Help You?</h2>
+        <h2 class="text-3xl font-bold mb-12">How Can We Help You?</h2>
         <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white p-8 rounded-lg shadow-lg text-center">
-                <img
-                    src="{% static 'pngtree-colorful-archery-target-with-arrow-hitting-bullseye-png-image_14078548.png' %}"
-                    alt="Skill Assessment"
-                    class="w-16 h-16 mx-auto mb-4"
-                />
+                <img src="{% static 'pngtree-colorful-archery-target-with-arrow-hitting-bullseye-png-image_14078548.png' %}"
+                    alt="Skill Assessment" class="w-16 h-16 mx-auto mb-4" />
                 <h3 class="text-2xl font-bold mb-4">Skill Assessment</h3>
                 <p>
                     Evaluate your current skills and discover areas that need
@@ -54,99 +51,73 @@
                 </p>
             </div>
             <div class="bg-white p-8 rounded-lg shadow-lg text-center">
-                <img
-                    src="{% static 'skill-dev.png' %}"
-                    alt="Career Path"
-                    class="w-16 h-16 mx-auto mb-4"
-                />
+                <img src="{% static 'skill-dev.png' %}" alt="Career Path" class="w-16 h-16 mx-auto mb-4" />
                 <h3 class="text-2xl font-bold mb-4">Career Path</h3>
                 <p>
                     Get personalized recommendations for career paths that match your
                     skills and interest
                 </p>
             </div>
-                    <div class="bg-white p-8 rounded-lg shadow-lg text-center">
-                        <img
-                            src="{% static '161432114-161432114-BSRG19240119_00-2100.webp' %}"
-                            alt="Job Placement"
-                            class="w-16 h-16 mx-auto mb-4"
-                        />
-                            <h3 class="text-2xl font-bold mb-4">Professional Development</h3>
-                            <p>about us</p>
-                    </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+                <img src="{% static '161432114-161432114-BSRG19240119_00-2100.webp' %}" alt="Job Placement"
+                    class="w-16 h-16 mx-auto mb-4" />
+                <h3 class="text-2xl font-bold mb-4">Professional Development</h3>
+                <p>about us</p>
             </div>
         </div>
+    </div>
     </div>
     {% comment %} this is our services end {% endcomment %}
     {% comment %} this is our development team start {% endcomment %}
     <div class="bg-gray-100 py-20">
         <div class="container mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-12">Development Team</h2>
+            <h2 class="text-3xl font-bold mb-12">Development Team</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-lg shadow-lg">
-            <div class="flex justify-center mb-4">
-                <svg
-                        class="w-24 h-24 text-gray-400"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                <path
-                        fill-rule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clip-rule="evenodd"
-                ></path>
-                </svg>
-            </div>
-                <h3 class="text-xl font-bold mb-2">Amr Foqha</h3>
-                <p class="text-gray-600">Full Stack Developer</p>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-24 h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Amr Foqha</h3>
+                    <p class="text-gray-600">Full Stack Developer</p>
                 </div>
-            <div class="bg-white p-8 rounded-lg shadow-lg">
-            <div class="flex justify-center mb-4">
-                <svg
-                        class="w-24 h-24 text-gray-400"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                <path
-                        fill-rule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clip-rule="evenodd"
-                ></path>
-                </svg>
-            </div>
-                <h3 class="text-xl font-bold mb-2">Ahmad Badwan</h3>
-                <p class="text-gray-600">Full Stack Developer</p>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-lg">
-            <div class="flex justify-center mb-4">
-                <svg
-                        class="w-24 h-24 text-gray-400"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                <path
-                        fill-rule="evenodd"
-                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clip-rule="evenodd"
-                ></path>
-                </svg>
-            </div>
-                <h3 class="text-xl font-bold mb-2">Nizar Aljamal</h3>
-                <p class="text-gray-600">Full Stack Developer</p>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-24 h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Ahmad Badwan</h3>
+                    <p class="text-gray-600">Full Stack Developer</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="flex justify-center mb-4">
+                        <svg class="w-24 h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Nizar Aljamal</h3>
+                    <p class="text-gray-600">Full Stack Developer</p>
+                </div>
             </div>
         </div>
-    </div>
     </div>
     {% comment %} this is our development team end {% endcomment %}
     {% comment %} this is our footer start {% endcomment %}
     <footer class="bg-gray-800 text-white text-center p-4">
         <p>&copy; 2025 CareerPilot.
-        <br>
-        All rights reserved. Designed to help you find your dream job.</p>
+            <br>
+            All rights reserved. Designed to help you find your dream job.
+        </p>
     </footer>
     {% comment %} this is our footer end {% endcomment %}
 </body>
+
 </html>
