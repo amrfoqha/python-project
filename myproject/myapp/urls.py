@@ -8,6 +8,8 @@ urlpatterns =[
     path('login',views.login),
     path('register',views.register),
     path('view_result',views.view_result),
+    path('view_cv_form',views.view_cv_form),
+    path('submit_quiz',views.view_cv_form),
     
 
     
