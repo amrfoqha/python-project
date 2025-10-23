@@ -22,7 +22,8 @@
         </div>
     </div>
     <form action="/register" method="post"
-        class=" mt-20 rounded-[5px] shadow-[1px_1px_10px] shadow-[#d6c8c8bb] w-1/4 p-5 pl-10 ml-[38%] text-2xl font-light">
+    class=" mt-20 rounded-[5px] shadow-[1px_1px_10px] shadow-[#d6c8c8bb] w-1/4 p-5 pl-10 ml-[38%] text-2xl font-light">
+            {% csrf_token %}
         <h1 class="text-center text-[#1e3a8a] font-medium">Create a new account</h1>
         <div class="mt-2 ml-5"><label for="first_name" class="block text-xl ">First Name:</label><input
                 class="border-[1px] rounded-[5px] mt-2 w-5/6 pl-2 text-xl h-10 border-[#d6c8c8bb]" type="text"

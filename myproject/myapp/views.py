@@ -11,11 +11,24 @@ def view_login(request):
 
 
 
-def login(request):
-    user=get_user_by_id(request.POST['email'],request.POST['password'])
-    request.session['id']=user.id
-    return HttpResponse("ahalan wa saaahlaaan be a3az 7babenaa")
 
 def register(request):
     if create_new_user(request):
-        return redirect('/quiz')
+        return redirect('/view_login')
+
+
+
+def login(request):
+    if login_user(request):
+        return redirect('/view_quze')
+    return redirect('/view_login')
+
+
+def view_quze(request):
+    return render(request,'quize.html')
+
+
+def submit_quze(request):
+    if submit_form(request):
+        return redirect('/reslt')
+    return redirect('/view_quze')
