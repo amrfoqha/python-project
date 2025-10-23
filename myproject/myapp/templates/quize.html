@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center">
+        <a href="" class="ml-[25px] text-[#fff] text-[25px] font-[700]" ><h1>CareerPilot</h1></a>
+        <div class="mr-[25px] text-[#fff] flex justify-between w-[300px]">
+            <a href="">Contact us</a>
+            <a href="">Who we are</a>
+            <a href="">Home</a>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <div class="ml-[25px] mt-[25px]">
+            <h1 class="text-3xl font-[600] ">Career Application Form</h1>
+            <h1 class="text-[#474141]">Choose your application method: Detailed form or CV upload</h1>
+        </div>
+    </div>
+    <div class="flex justify-center mt-[25px]">
+        <div class="flex justify-around items-center w-[650px] " >
+            <input type="submit" value="Fill Detailed Form" name="form" class="bg-white h-[40px] w-[300px] shadow-[1px_1px_10px] rounded-[5px] border-2 border-[#aba3a3] shadow-[#aba3a3]">
+            <input type="submit" value="Upload CV (PDF)" name="cv" class="bg-white h-[40px] w-[300px] shadow-[1px_1px_10px] rounded-[5px] border-2 border-[#aba3a3] shadow-[#aba3a3] ">
+        </div>
+    </div>
+    <div class="mt-[25px] flex justify-center ">
+        <form action="" method="POST" class="mx-auto " >
+            {% csrf_token %}
+            <div class="shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
+                <div class="flex items-center" >
+                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">1</p><p class="text-blue-600 font-[700]"> General Background & Motivation</p>
+                </div>
+                <div class="mt-[25px]">
+                    <label class="block" for="">Why did you choose to study IT?</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Tell us about your motivation for studying this field..." name="q1" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">Which IT fields interest you most? (Separate with commas)</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Cybersecurity, Software Development, Networking" name="q2" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">What was your favorite subject or project and why?</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe a project or subject that impacted you..." name="q3" id="">
+                </div>
+            </div>
+            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
+                <div class="flex items-center" >
+                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">2</p><p class="text-blue-600 font-[700]"> Technical Skills & Competence</p>
+                </div>
+                <div class="mt-[25px]">
+                    <label class="block" for="">Which programming languages are you most confident in? (Separate with commas)</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Python, JavaScript, Java" name="q4" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">What personal or academic project are you proud of?</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe a project you completed and are proud of..." name="q5" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">What tools or technologies have you used? (Separate with commas)</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Git, Docker, React, Node.js" name="q6" id="">
+                </div>
+            </div>
+            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
+                <div class="flex items-center" >
+                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">3</p><p class="text-blue-600 font-[700]"> Work Experience & Practical Exposure</p>
+                </div>
+                <div class="mt-[25px]">
+                    <label class="block" for="">Have you done internships or part-time IT work? What did you learn?</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe your practical experience and what you learned..." name="q7" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">Describe a technical challenge you solved</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Explain a technical challenge you faced and how you dealt with a ..." name="q8" id="">
+                </div>
+            </div>
+            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
+                <div class="flex items-center" >
+                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">4</p><p class="text-blue-600 font-[700]">  Career Goals & Vision</p>
+                </div>
+                <label for="" class="block mt-[15px]">What kind of role are you aiming for?</label>
+                    <select name="q9" id="" class="mt-[15px]">
+                        <option value="Select_appropriate_role">Select appropriate role</option>
+                        <option value="Software_Developer">Software Developer</option>
+                        <option value="Systems_Analyst">Systems Analyst</option>
+                        <option value="Technical_Consultant">Technical Consultant</option>
+                        <option value="Network_Engineer">Network Engineer</option>
+                        <option value="UI/UX_Designer">UI/UX Designer</option>
+                        <option value="Database_Administrator">Database Administrator</option>
+                        <option value="Information_Security_Specialist">Information Security Specialist</option>
+                    </select>
+                    <div class="mt-[15px]">
+                        <label for="">What type of work environment suits you?</label>
+                        <div class="flex justify-around mt-[10px]">
+                            <div>
+                                <label for="">Startup</label>
+                                <input type="radio" name="q10" value="Startup" id="">
+                            </div>
+                            <div>
+                                <label for="">Corporate</label>
+                                <input type="radio" name="q10" value="Corporate" id="">
+                            </div>
+                            <div>
+                                <label for="">Freelance</label>
+                                <input type="radio" name="q10" value="Freelance" id="">
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
+                <div class="flex items-center" >
+                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">5</p><p class="text-blue-600 font-[700]"> Industry Awareness</p>
+                </div>
+                <div class="mt-[25px]">
+                    <label class="block" for="">What IT trends interest you most right now? (Separate with commas)</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., AI, Cloud Computing, IoT" name="q11" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">How do you stay updated with new technologies? (Separate with commas)</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Online courses, Tech blogs, Conferences" name="q12" id="">
+                </div>
+            </div>
+            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
+                <div class="flex items-center" >
+                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">6</p><p class="text-blue-600 font-[700]"> Soft Skills & Team Fit</p>
+                </div>
+                <div class="mt-[25px]">
+                    <label class="block" for="">How do you handle teamwork?</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="eDescribe your approach to teamwork..." name="q13" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">How do you communicate technical info to non-tech people?</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Explain your approach to communicating with non-technical people..." name="q14" id="">
+                </div>
+                <div class="mt-[20px]">
+                    <label class="block" for="">How do you deal with pressure or tight deadlines?</label>
+                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe your strategy for managing pressure and deadlines..." name="q15" id="">
+                </div>
+            </div>
+            <div class="mt-[25px] mb-[40px] flex justify-center">
+                <input type="submit" value="Submit Form" name="" class="bg-[#16a34a] h-[40px] w-[200px] shadow-[1px_1px_10px] rounded-[5px] text-[#ffff] border-[#aba3a3] shadow-[#aba3a3] font-[700]">
+            </div>
+        </div>
+    </form>
+</body>
+</html>
