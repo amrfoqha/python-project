@@ -97,6 +97,7 @@ class Result(models.Model):
 def get_user_by_id(email,password):
     return User.objects.get(email=email,password=password)
 
+
 def create_user(first_name, last_name, email,phone,location, password,level):
     User.objects.create(first_name=first_name,last_name=last_name, email=email, phone=phone,location=location, password=password,level=level)
 
