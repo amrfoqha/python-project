@@ -31,6 +31,8 @@ class UserManager(models.Manager):
             pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
             if not pattern.match(postData['email']):
                 errors['email'] = 'email is invalid'
+            elif is_exists(postData['email']):
+                errors['email'] = 'email is already exists'    
         if len(postData['phone'])<10:
             errors['phone'] = "inValid phone number"
         if len(postData['password'])==0:
@@ -83,19 +85,23 @@ class User(models.Model):
     email=models.EmailField(max_length=55)
     phone=models.CharField(max_length=15)
     location=models.CharField(max_length=100)
-    password=models.CharField(max_length=45)
+    password=models.CharField(max_length=255)
     level=models.IntegerField(default=1)
     avatar=models.URLField(max_length=400,default="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
     objects = UserManager()
 
 class Result(models.Model):
-    description=models.TextField()
-    recomindation=models.CharField(max_length=100)
+    career_recommendation=models.TextField()
+    confidence_level=models.FloatField(null=True, blank=True)
+    key_strengths=models.TextField(null=True, blank=True)
+    personality_traits=models.TextField(null=True, blank=True)
+    reasoning=models.TextField(null=True, blank=True)
+    recommended_skills_to_learn=models.TextField(null=True, blank=True)
+    growth_opportunities=models.TextField()
     user=models.ForeignKey(User,related_name='results',on_delete=models.CASCADE)
-    result=models.CharField(max_length=100)
-
-def get_user_by_id(email,password):
-    return User.objects.get(email=email,password=password)
+    
+def get_user_by_id(user_id):
+    return User.objects.get(id=user_id)
 
 
 def create_user(first_name, last_name, email,phone,location, password,level):
@@ -122,7 +128,7 @@ def create_new_user(request):
 
 
 def search_email(email):
-    return User.objects.filter(email=email)
+    return User.objects.filter(email=email)[0]
 def login_user(request):
     email=request.POST['email']
     password=request.POST['password']
