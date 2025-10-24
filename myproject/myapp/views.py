@@ -78,3 +78,11 @@ def submit_quiz(request):
 
 def view_cv_form(request):
     return render(request,'cv_form.html')
+
+
+def profile(request):
+    return render(request,'profile.html')
+
+
+def editprofile(request):
+    return render(request,'editprofil.html')
