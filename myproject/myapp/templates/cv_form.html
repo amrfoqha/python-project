@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+
+
+</head>
+
+<body>
+    <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center">
+        <a href="/" class="ml-[25px] text-[#fff] text-[25px] font-[700]">
+            <h1>CareerPilot</h1>
+        </a>
+        <div class="mr-[25px] text-[#fff] flex justify-between w-[300px]">
+            <a href="">Contact us</a>
+            <a href="">Who we are</a>
+            <a href="">Home</a>
+        </div>
+    </div>
+
+
+
+    <div class=" text-center mt-[25px]">
+        <h1 class="text-3xl font-[600] ">Career Application Form</h1>
+        <h1 class="text-[#474141]">Choose your application method: Detailed form or CV upload</h1>
+    </div>
+
+
+
+    <div
+        class="flex justify-center mx-auto mt-[25px] bg-[#3f61be] py-5 w-1/2 rounded-[10px] border-[#c4c4c460] border ">
+        <div class="flex justify-around items-center w-[650px] ">
+            <input type="submit" value="Fill Detailed Form" name="form"
+                class="bg-white h-[40px] w-[300px] shadow-[1px_1px_10px] rounded-[5px] border-2 border-[#aba3a3] shadow-[#aba3a3]">
+            <input type="submit" value="Upload CV (PDF)" name="cv"
+                class="bg-white h-[40px] w-[300px] shadow-[1px_1px_10px] rounded-[5px] border-2 border-[#aba3a3] shadow-[#aba3a3] ">
+        </div>
+    </div>
+
+
+
+    <label for="uploadFile1" id="dropArea"
+        class="bg-white text-center rounded-2xl border-dashed mt-10 w-full max-w-[50%] min-h-[480px] py-4 px-4 flex flex-col items-center justify-center cursor-pointer border-2 border-gray-300 mx-auto transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-32 mb-6 fill-[#3f61be]" viewBox="0 0 24 24">
+            <path
+                d="M22 13a1 1 0 0 0-1 1v4.213A2.79 2.79 0 0 1 18.213 21H5.787A2.79 2.79 0 0 1 3 18.213V14a1 1 0 0 0-2 0v4.213A4.792 4.792 0 0 0 5.787 23h12.426A4.792 4.792 0 0 0 23 18.213V14a1 1 0 0 0-1-1Z"
+                data-original="#000000" />
+            <path
+                d="M6.707 8.707 11 4.414V17a1 1 0 0 0 2 0V4.414l4.293 4.293a1 1 0 0 0 1.414-1.414l-6-6a1 1 0 0 0-1.414 0l-6 6a1 1 0 0 0 1.414 1.414Z"
+                data-original="#000000" />
+        </svg>
+        <p class="text-[#3f61be] font-semibold text-lg ">Upload Your CV</p>
+        <p class="text-slate-400 font-semibold mt-5 ">Drag & Drop or <span class="text-[#007bff]">Choose file</span> to
+            upload</p>
+        <input type="file" id="uploadFile1" class="hidden" accept=".pdf,.doc,.docx" />
+        <p class="text-slate-400 mt-2" id="fileName">PDF or DOCX Only Allowed.</p>
+    </label>
+
+    <script>
+        const dropArea = document.getElementById("dropArea");
+        const fileInput = document.getElementById("uploadFile1");
+        const fileName = document.getElementById("fileName");
+
+        // Highlight area when file is dragged over it
+        dropArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropArea.classList.add("border-[#3f61be]", "bg-blue-50");
+        });
+
+        // Remove highlight when drag leaves
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("border-[#3f61be]", "bg-blue-50");
+        });
+
+        // Handle drop
+        dropArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropArea.classList.remove("border-[#3f61be]", "bg-blue-50");
+
+            const file = e.dataTransfer.files[0];
+            if (file && (file.name.endsWith(".pdf") || file.name.endsWith(".docx") || file.name.endsWith(".doc"))) {
+                fileInput.files = e.dataTransfer.files; // Attach file to input
+                fileName.textContent = `Uploaded: ${file.name}`;
+                fileName.classList.add("text-green-600");
+            } else {
+                fileName.textContent = "Invalid file type. Please upload PDF or DOCX.";
+                fileName.classList.add("text-red-600");
+            }
+        });
+
+        // Optional: show file name when selected manually
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            if (file) {
+                fileName.textContent = `Uploaded: ${file.name}`;
+                fileName.classList.add("text-green-600");
+            }
+        });
+    </script>
+
+
+
+
+
+
+
+
+</body>
+
+</html>
