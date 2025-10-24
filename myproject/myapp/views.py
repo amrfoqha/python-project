@@ -84,7 +84,5 @@ def profile(request):
     return render(request,'profile.html')
 
 
-
-
 def editprofile(request):
     return render(request,'editprofil.html')

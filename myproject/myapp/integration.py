@@ -1,4 +1,4 @@
-import requests , json
+import requests, json
 from django.conf import settings
 from .models import Result, User
 from .prompt_template import PROMPT_TEMPLATE
