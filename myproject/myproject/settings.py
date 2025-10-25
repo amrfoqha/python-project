@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pyhton_project',
+        'NAME': 'career_pilot',
         'USER': 'root',  
         'PASSWORD': 'root123',    
         'HOST': 'localhost',

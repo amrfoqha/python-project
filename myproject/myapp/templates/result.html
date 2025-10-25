@@ -51,12 +51,13 @@
             <h1>CareerPilot</h1>
         </a>
 
-        <div class="mr-[25px] text-[#fff] flex justify-center w-[600px]">
-            <div class="flex justify-between w-1/2 items-center">
-                <a href="">Contact us</a>
-                <a href="">Who we are</a>
-                <a href="/">Home</a>
-            </div>
+        <div class="mr-[25px] text-[#fff] flex justify-center w-[750px]">
+      <div class="flex justify-between w-1/2 items-center">
+        <a href="">Contact us</a>
+        <a href="{% url 'home' %}#who_we_are">Who we are</a>
+        <a href="/">Home</a>
+        <a href="/view_quze">Retake the Test</a>
+      </div>
             <div class="relative w-max mx-auto">
                 <button type="button" id="dropdownToggle"
                     class="px-4 py-2 flex items-center rounded-lg text-slate-900 text-sm font-medium border border-slate-300 outline-none hover:bg-slate-100 cursor-pointer">
@@ -79,7 +80,7 @@
                                 d="M337.711 241.3a16 16 0 0 0-11.461 3.988c-18.739 16.561-43.688 25.682-70.25 25.682s-51.511-9.121-70.25-25.683a16.007 16.007 0 0 0-11.461-3.988c-78.926 4.274-140.752 63.672-140.752 135.224v107.152C33.537 499.293 46.9 512 63.332 512h385.336c16.429 0 29.8-12.707 29.8-28.325V376.523c-.005-71.552-61.831-130.95-140.757-135.223zM446.463 480H65.537V376.523c0-52.739 45.359-96.888 104.351-102.8C193.75 292.63 224.055 302.97 256 302.97s62.25-10.34 86.112-29.245c58.992 5.91 104.351 50.059 104.351 102.8zM256 234.375a117.188 117.188 0 1 0-117.188-117.187A117.32 117.32 0 0 0 256 234.375zM256 32a85.188 85.188 0 1 1-85.188 85.188A85.284 85.284 0 0 1 256 32z"
                                 data-original="#000000"></path>
                         </svg>
-                        View profile
+                        <a href="/profile">View profile</a>
                     </li>
 
                     <li
@@ -139,74 +140,76 @@
             <p class="mt-4 text-gray-700">{{ result.growth_opportunities }}</p>
         </div>
     </div>
-    <div class="w-8/12 md:w-3/4 lg:w-2/6 mx-auto mt-10 mb-16 bg-white p-6 rounded-xl shadow-xl">
-        <h3 class="text-2xl text-[#1e3a8a] font-semibold mb-4 text-center">Skills Overview</h3>
-        <canvas id="skillsChart"></canvas>
 
+    <div class="flex justify-evenly h-[500px] mb-20">
+        <table class=" px-5 mt-10 border-2  shadow-[1px_1px_10px] shadow-[#dddddd] text-center text-xl">
+            <thead>
+                <tr class="">
+                    <th class="pl-4 py-2 border-r-[1px] border-[#dddd] ">Company Name (location)</th>
+                    <th class="pr-4">Roles</th>
+                </tr>
+            </thead>
+            {% for company in companies %}
+            <tr class="border-[1px] pl-10 h-14">
+                <td class="font-medium px-5  py-4 border-r-[1px] border-[#dddd]">{{company.name}}</td>
+                <td>
+                    <ul class="list-decimal px-2 ml-10 mr-3 mb-2 pb-2">
+                        {% for role in company.roles %}
+                        <li class="mt-2">{{role}}.</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class="px-5 mt-5  pb-10  w-[35%]">
+            <h3 class="text-3xl text-[#1e3a8a] font-semibold mb-4 text-center pr-10 pb-5">Skills Overview</h3>
+            <canvas id="skillsDoughnut" class="ml-20 "></canvas>
+
+        </div>
     </div>
 
-    <div class="bg-white shadow-md rounded-lg p-6 w-[300px] mx-auto mt-10 relative">
-        <h3 class="text-xl text-[#1e3a8a] font-semibold mb-4 text-center">Confidence Level</h3>
-        <canvas id="confidenceChart"></canvas>
-        <p class="absolute left-32 top-44 text-3xl text-[#1e3a8a]">{{confidence_percentage}}%</p>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
     <script>
-        const confidence = "{{ result.confidence_level}}";
-        new Chart(document.getElementById('confidenceChart'), {
+        const strengths = "{{ result.key_strengths }}".split(", ");
+        const learnSkills = "{{ result.recommended_skills_to_learn }}".split(", ");
+
+        // مجموع عدد العناصر لكل فئة
+        const data = [strengths.length, learnSkills.length];
+
+        const ctx = document.getElementById('skillsDoughnut').getContext('2d');
+        new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Confidence', 'Remaining'],
+                labels: ['Key Strengths', 'Recommended Skills to Learn'],
                 datasets: [{
-                    data: [confidence * 100, 100 - confidence * 100],
-                    backgroundColor: ['#1e3a8a', '#e5e7eb'],
-                    borderWidth: 0
+                    data: data,
+                    backgroundColor: ['#1e3a8a', '#22c55e'],
+                    borderColor: ['#1e3a8a', '#22c55e'],
+                    borderWidth: 1,
+                    marginleft: 10
                 }]
             },
             options: {
-                cutout: '70%',
+                responsive: true,
+                layout: {
+                    padding: {
+                        left: 10,   // يعطي مسافة من اليسار
+                        right: 0,
+                        top: 0,
+                        bottom: 10
+                    }
+                },
                 plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: false }
+                    legend: { position: 'bottom' }
                 }
             }
         });
     </script>
 
-    <script>
-        const strengths = "{{ result.key_strengths }}".split(", ");
-        const learnSkills = "{{ result.recommended_skills_to_learn }}".split(", ");
-        const labels = [...new Set([...strengths, ...learnSkills])];
-        const data1 = labels.map(l => strengths.includes(l) ? 8 : 0);
-        const data2 = labels.map(l => learnSkills.includes(l) ? 7 : 0);
-
-        const ctx = document.getElementById('skillsChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Key Strengths',
-                    data: data1,
-                    borderColor: '#1e3a8a',
-                    backgroundColor: 'rgba(30, 58, 138, 0.2)',
-                    borderWidth: 2
-                },
-                {
-                    label: 'Recommended Skills to Learn',
-                    data: data2,
-                    borderColor: '#22c55e',
-                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: { r: { beginAtZero: true, max: 10 } }
-            }
-        });
-    </script>
 
 </body>
 

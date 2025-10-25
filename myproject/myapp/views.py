@@ -12,9 +12,6 @@ from docx import Document
 import PyPDF2
 from myproject import settings
 
-# Create your views here.
-
-
 
 def root(request):
     if 'logged_in' not in request.session:
@@ -34,6 +31,8 @@ def view_register(request):
     
     return render(request,'registration.html')
 def view_login(request):
+    if request.session['logged_in']:
+        return redirect('/view_quze')
     return render(request,'login.html')
 
 
@@ -76,7 +75,8 @@ def result_view(request):
         context = {
             "user": user,
             "result": result,
-            "confidence_percentage":int(result.confidence_level*100)
+            "confidence_percentage":int(result.confidence_level*100),
+            'companies':get_companies()
         }
         return render(request, "result.html", context) 
     return redirect('/')  
@@ -88,6 +88,7 @@ def result_view(request):
 
 def submit_form(request):
     if request.method == "POST":
+        
         user_id = request.session.get('user_id')
         if not user_id:
             messages.error(request, "User session expired. Please try again.")
@@ -135,3 +136,37 @@ def logout(request):
     del request.session['logged_in']
     
     return redirect('/')
+
+def profile(request):
+    if 'toggle_form' not in request.session:
+        request.session['toggle_form']=False
+    if 'change_password' not in request.session:
+        request.session['change_password']=False
+    if request.session['logged_in']:
+        context={
+            'user':get_user_by_id(request.session['user_id']),
+            'results':get_all_results(request.session['user_id']),
+            'confidence':f"{get_average_confidence(request.session['user_id']):.2f}"
+            
+        }    
+        return render(request,'profile.html',context)
+    return redirect('/')
+
+def edit_info(request):
+    if change_info(request):
+        return redirect('/toggle_edit_profile')
+    return redirect('/profile')
+
+def toggle_edit_profile(request):
+    request.session['toggle_form']= not request.session['toggle_form']
+    return redirect('/profile')
+
+def toggle_change_password(request):
+    request.session['change_password']= not request.session['change_password']
+    return redirect('/profile')
+
+def change_password(request):
+    if change_password_check(request):
+        return redirect('/toggle_change_password')
+    else:
+        return redirect('/profile')
