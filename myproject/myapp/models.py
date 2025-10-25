@@ -142,7 +142,6 @@ def login_user(request):
 
 
 
-
 def is_exists(email):
     return User.objects.filter(email=email).exists()
 
@@ -158,4 +157,7 @@ def submit_form(request):
             return True
 
 
+def get_resilt(id):
+    user =User.objects.get(id=id)
+    return user.results
 
