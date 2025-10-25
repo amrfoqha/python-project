@@ -135,6 +135,7 @@ def logout(request):
     del request.session['user_id']
     del request.session['logged_in']
     
+    
     return redirect('/')
 
 def profile(request):
@@ -170,3 +171,17 @@ def change_password(request):
         return redirect('/toggle_change_password')
     else:
         return redirect('/profile')
+    
+def view_result_by_id(request,result_id):
+    if request.session['logged_in']:
+        user=get_user_by_id(request.session['user_id'])
+        result = Result.objects.get(id=result_id)
+
+        context = {
+            "user": user,
+            "result": result,
+            "confidence_percentage":int(result.confidence_level*100),
+            'companies':get_companies()
+        }
+        return render(request, "result.html", context) 
+    return redirect('/')    

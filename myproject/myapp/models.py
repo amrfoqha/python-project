@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib import messages
 import bcrypt
 from django.db.models import Avg
+from django.shortcuts import render, redirect
+import requests
 
 class UserManager(models.Manager):
     def validator_login(self, postData):
@@ -10,7 +12,7 @@ class UserManager(models.Manager):
         if len(postData['email'])<=0:
             errors['email'] = "email must be filed"
         else:
-            pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')
+            pattern = re.compile(r'^[a-z.-_A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')
             if not pattern.match(postData['email']):
                 errors['email'] = 'Wrong password or email'
             elif not is_exists(postData['email']):
@@ -29,7 +31,7 @@ class UserManager(models.Manager):
         if len(postData['email'])<=0:
             errors['email']='email must be filled'
         else:    
-            pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
+            pattern = re.compile(r'^[a-z.-_A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
             if not pattern.match(postData['email']):
                 errors['email'] = 'email is invalid'
             elif is_exists(postData['email']):
@@ -101,11 +103,9 @@ class UserManager(models.Manager):
         if len(postData['email'])<=0:
             errors['email']='email must be filled'
         else:    
-            pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
+            pattern = re.compile(r'^[a-z.-_A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
             if not pattern.match(postData['email']):
                 errors['email'] = 'email is invalid'
-            elif is_exists(postData['email']):
-                errors['email'] = 'email is already exists'    
         if len(postData['phone'])<10:
             errors['phone'] = "inValid phone number"
         return errors
@@ -190,10 +190,6 @@ def login_user(request):
 def is_exists(email):
     return User.objects.filter(email=email).exists()
 
-def is_exists_exclude(email):
-    return User.objects.filter(email=email).exclude(id=request.session['user_id']).exists()
-
-
 def submit_form(request):
         errors = User.objects.validator_form(request.POST)
         if len(errors) > 0:
@@ -262,7 +258,7 @@ def change_info(request):
         email=request.POST['email']
         phone=request.POST['phone']
         location=request.POST['location']
-        avatar=request.POST['avatar']
+        avatar=request.POST['avatar_url']
         user=get_user_by_id(request.session['user_id'])
         
         user.first_name=first_name
@@ -273,6 +269,10 @@ def change_info(request):
         if avatar:
             user.avatar=avatar
         if email != user.email:
+            if is_exists(email):
+                messages.error(request,'email is already exists',extra_tags="change_info__email")
+                return False
+            else:
                 user.email=email
         user.save()    
         return True

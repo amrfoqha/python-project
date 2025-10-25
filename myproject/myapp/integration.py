@@ -83,7 +83,7 @@ def analyze_user_data(user_id, quiz_data=None, cv_summary=""):
             )
         
         ai_output = response.choices[0].message.content
-        print("AI Output:", ai_output)
+
 
         if not ai_output:
             raise ValueError("Empty AI response")
