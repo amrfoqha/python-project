@@ -18,8 +18,8 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'python_project',
+        'NAME': 'career_pilot',
         'USER': 'root',  
-        'PASSWORD': '2471',    
+        'PASSWORD': 'root123',    
         'HOST': 'localhost',
         'PORT': '3306',  
     }

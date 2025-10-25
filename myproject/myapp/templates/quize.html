@@ -1,151 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=\, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
-<body>
-    <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center">
-        <a href="" class="ml-[25px] text-[#fff] text-[25px] font-[700]" ><h1>CareerPilot</h1></a>
-        <div class="mr-[25px] text-[#fff] flex justify-between w-[300px]">
-            <a href="">Contact us</a>
-            <a href="">Who we are</a>
-            <a href="">Home</a>
-        </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let dropdownToggle = document.getElementById('dropdownToggle');
+    let dropdownMenu = document.getElementById('dropdownMenu');
+    function toggleDropdown() {
+      dropdownMenu.classList.toggle('hidden');
+      dropdownMenu.classList.toggle('block');
+    }
+    function hideDropdown() {
+      dropdownMenu.classList.add('hidden');
+      dropdownMenu.classList.remove('block');
+    }
+    dropdownToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleDropdown();
+    });
+    dropdownMenu.querySelectorAll('.dropdown-item').forEach((li) => {
+      li.addEventListener('click', () => {
+        hideDropdown();
+      });
+    });
+    document.addEventListener('click', (event) => {
+      if (!dropdownMenu.contains(event.target) && event.target !== dropdownToggle) {
+        hideDropdown();
+      }
+    });
+  });
+</script>
+
+<body class="bg-gray-50">
+  <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center px-4 sm:px-8">
+    <a href="/" class="text-white text-2xl font-bold">CareerPilot</a>
+    <div class="flex items-center gap-4">
+      <div class="flex text-[9px] lg:text-xl md:text-xl font-medium md:flex-row gap-3 md:gap-6 text-white items-center">
+        <a href="">Contact us</a>
+        <a href="{% url 'home' %}#who_we_are">Who we are</a>
+        <a href="/">Home</a>
+      </div>
+      <div class="relative">
+        <button id="dropdownToggle"
+          class="px-3 py-2 flex items-center rounded-lg text-sm font-medium border border-slate-300 outline-none hover:bg-slate-100 cursor-pointer">
+          <img src="{{user.avatar}}" class="w-7 h-7 mr-2 rounded-full">
+          <span class="text-white hidden sm:block">{{user.last_name}}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-slate-400 ml-2" viewBox="0 0 24 24">
+            <path fill-rule="evenodd"
+              d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z" />
+          </svg>
+        </button>
+        <ul id="dropdownMenu"
+          class="absolute hidden shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded-lg max-h-96 overflow-auto right-0">
+          <li
+            class="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-600 font-medium text-sm cursor-pointer">
+            <a href="/profile" class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 mr-3" viewBox="0 0 512 512">
+                <path
+                  d="M337.711 241.3a16 16 0 0 0-11.461 3.988c-18.739 16.561-43.688 25.682-70.25 25.682s-51.511-9.121-70.25-25.683a16.007 16.007 0 0 0-11.461-3.988c-78.926 4.274-140.752 63.672-140.752 135.224v107.152C33.537 499.293 46.9 512 63.332 512h385.336c16.429 0 29.8-12.707 29.8-28.325V376.523c-.005-71.552-61.831-130.95-140.757-135.223zM446.463 480H65.537V376.523c0-52.739 45.359-96.888 104.351-102.8C193.75 292.63 224.055 302.97 256 302.97s62.25-10.34 86.112-29.245c58.992 5.91 104.351 50.059 104.351 102.8zM256 234.375a117.188 117.188 0 1 0-117.188-117.187A117.32 117.32 0 0 0 256 234.375zM256 32a85.188 85.188 0 1 1-85.188 85.188A85.284 85.284 0 0 1 256 32z">
+                </path>
+              </svg>
+              View profile
+            </a>
+          </li>
+          <li
+            class="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-600 font-medium text-sm cursor-pointer">
+            <a href="/logout" class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 mr-3" viewBox="0 0 6.35 6.35">
+                <path
+                  d="M3.172.53a.265.266 0 0 0-.262.268v2.127a.265.266 0 0 0 .53 0V.798A.265.266 0 0 0 3.172.53zm1.544.532a.265.266 0 0 0-.026 0 .265.266 0 0 0-.147.47c.459.391.749.973.749 1.626 0 1.18-.944 2.131-2.116 2.131A2.12 2.12 0 0 1 1.06 3.16c0-.65.286-1.228.74-1.62a.265.266 0 1 0-.344-.404A2.667 2.667 0 0 0 .53 3.158a2.66 2.66 0 0 0 2.647 2.663 2.657 2.657 0 0 0 2.645-2.663c0-.812-.363-1.542-.936-2.03a.265.266 0 0 0-.17-.066z">
+                </path>
+              </svg>
+              Logout
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="flex justify-center">
-        <div class="ml-[25px] mt-[25px]">
-            <h1 class="text-3xl font-[600] ">Career Application Form</h1>
-            <h1 class="text-[#474141]">Choose your application method: Detailed form or CV upload</h1>
+  </div>
+
+  <div class="text-center mt-6 px-4">
+    <h1 class="text-3xl font-semibold">Career Application Form</h1>
+    <h2 class="text-gray-600">Choose your application method: Detailed form or CV upload</h2>
+  </div>
+
+  <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6 px-4">
+    <a href="view_quze"
+      class="bg-white h-[40px] text-center pt-2 w-full sm:w-[300px] shadow-md rounded border-2 border-[#5b73b6] shadow-[#1e3a8a]">
+      Fill Detailed Form
+    </a>
+    <a href="/view_cv_form"
+      class="bg-white h-[40px] text-center pt-2 w-full sm:w-[300px] shadow-md rounded border-2 border-[#5b73b6] shadow-[#1e3a8a]">
+      Upload CV (PDF)
+    </a>
+  </div>
+
+  <form action="/submit_form" method="POST" class="max-w-2xl mx-auto mt-6 px-4">
+    {% csrf_token %}
+    <div class="shadow rounded border border-gray-300 p-5 bg-white">
+      <div class="flex items-center">
+        <p class="mr-3 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">1</p>
+        <p class="text-blue-600 font-semibold">General Background & Motivation</p>
+      </div>
+      <div class="mt-4 space-y-4">
+        <div>
+          <label>Why did you choose to study IT?</label>
+          <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="background">
         </div>
+        <div>
+          <label>Which IT fields interest you most?</label>
+          <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="interest">
+        </div>
+        <div>
+          <label>What was your favorite subject or project and why?</label>
+          <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="project">
+        </div>
+      </div>
     </div>
-    <div class="flex justify-center mt-[25px]">
-        <div class="flex justify-around items-center w-[650px] " >
-            <input type="submit" value="Fill Detailed Form" name="form" class="bg-white h-[40px] w-[300px] shadow-[1px_1px_10px] rounded-[5px] border-2 border-[#aba3a3] shadow-[#aba3a3]">
-            <input type="submit" value="Upload CV (PDF)" name="cv" class="bg-white h-[40px] w-[300px] shadow-[1px_1px_10px] rounded-[5px] border-2 border-[#aba3a3] shadow-[#aba3a3] ">
+
+    <div class="mt-5 shadow rounded border border-gray-300 p-5 bg-white">
+      <div class="flex items-center">
+        <p class="mr-3 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">2</p>
+        <p class="text-blue-600 font-semibold">Technical Skills & Competence</p>
+      </div>
+      <div class="mt-4 space-y-4">
+        <div>
+          <label>Which programming languages are you confident in?</label>
+          <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="skills">
         </div>
+        <div>
+          <label>What personal or academic project are you proud of?</label>
+          <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="experience">
+        </div>
+      </div>
     </div>
-    <div class="mt-[25px] flex justify-center ">
-        <form action="" method="POST" class="mx-auto " >
-            {% csrf_token %}
-            <div class="shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
-                <div class="flex items-center" >
-                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">1</p><p class="text-blue-600 font-[700]"> General Background & Motivation</p>
-                </div>
-                <div class="mt-[25px]">
-                    <label class="block" for="">Why did you choose to study IT?</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Tell us about your motivation for studying this field..." name="q1" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">Which IT fields interest you most? (Separate with commas)</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Cybersecurity, Software Development, Networking" name="q2" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">What was your favorite subject or project and why?</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe a project or subject that impacted you..." name="q3" id="">
-                </div>
-            </div>
-            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
-                <div class="flex items-center" >
-                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">2</p><p class="text-blue-600 font-[700]"> Technical Skills & Competence</p>
-                </div>
-                <div class="mt-[25px]">
-                    <label class="block" for="">Which programming languages are you most confident in? (Separate with commas)</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Python, JavaScript, Java" name="q4" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">What personal or academic project are you proud of?</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe a project you completed and are proud of..." name="q5" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">What tools or technologies have you used? (Separate with commas)</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Git, Docker, React, Node.js" name="q6" id="">
-                </div>
-            </div>
-            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
-                <div class="flex items-center" >
-                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">3</p><p class="text-blue-600 font-[700]"> Work Experience & Practical Exposure</p>
-                </div>
-                <div class="mt-[25px]">
-                    <label class="block" for="">Have you done internships or part-time IT work? What did you learn?</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe your practical experience and what you learned..." name="q7" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">Describe a technical challenge you solved</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Explain a technical challenge you faced and how you dealt with a ..." name="q8" id="">
-                </div>
-            </div>
-            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
-                <div class="flex items-center" >
-                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">4</p><p class="text-blue-600 font-[700]">  Career Goals & Vision</p>
-                </div>
-                <label for="" class="block mt-[15px]">What kind of role are you aiming for?</label>
-                    <select name="q9" id="" class="mt-[15px]">
-                        <option value="Select_appropriate_role">Select appropriate role</option>
-                        <option value="Software_Developer">Software Developer</option>
-                        <option value="Systems_Analyst">Systems Analyst</option>
-                        <option value="Technical_Consultant">Technical Consultant</option>
-                        <option value="Network_Engineer">Network Engineer</option>
-                        <option value="UI/UX_Designer">UI/UX Designer</option>
-                        <option value="Database_Administrator">Database Administrator</option>
-                        <option value="Information_Security_Specialist">Information Security Specialist</option>
-                    </select>
-                    <div class="mt-[15px]">
-                        <label for="">What type of work environment suits you?</label>
-                        <div class="flex justify-around mt-[10px]">
-                            <div>
-                                <label for="">Startup</label>
-                                <input type="radio" name="q10" value="Startup" id="">
-                            </div>
-                            <div>
-                                <label for="">Corporate</label>
-                                <input type="radio" name="q10" value="Corporate" id="">
-                            </div>
-                            <div>
-                                <label for="">Freelance</label>
-                                <input type="radio" name="q10" value="Freelance" id="">
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
-                <div class="flex items-center" >
-                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">5</p><p class="text-blue-600 font-[700]"> Industry Awareness</p>
-                </div>
-                <div class="mt-[25px]">
-                    <label class="block" for="">What IT trends interest you most right now? (Separate with commas)</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., AI, Cloud Computing, IoT" name="q11" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">How do you stay updated with new technologies? (Separate with commas)</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="e.g., Online courses, Tech blogs, Conferences" name="q12" id="">
-                </div>
-            </div>
-            <div class="mt-[15px] shadow-[1px_1px_10px] rounded-[5px] border-1 border-[#aba3a3] shadow-[#aba3a3] p-[20px]">
-                <div class="flex items-center" >
-                    <p class="mr-[10px]  w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">6</p><p class="text-blue-600 font-[700]"> Soft Skills & Team Fit</p>
-                </div>
-                <div class="mt-[25px]">
-                    <label class="block" for="">How do you handle teamwork?</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="eDescribe your approach to teamwork..." name="q13" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">How do you communicate technical info to non-tech people?</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Explain your approach to communicating with non-technical people..." name="q14" id="">
-                </div>
-                <div class="mt-[20px]">
-                    <label class="block" for="">How do you deal with pressure or tight deadlines?</label>
-                    <input class="mt-[10px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Describe your strategy for managing pressure and deadlines..." name="q15" id="">
-                </div>
-            </div>
-            <div class="mt-[25px] mb-[40px] flex justify-center">
-                <input type="submit" value="Submit Form" name="" class="bg-[#16a34a] h-[40px] w-[200px] shadow-[1px_1px_10px] rounded-[5px] text-[#ffff] border-[#aba3a3] shadow-[#aba3a3] font-[700]">
-            </div>
-        </div>
-    </form>
+
+    <div class="mt-5 shadow rounded border border-gray-300 p-5 bg-white">
+      <div class="flex items-center">
+        <p class="mr-3 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">3</p>
+        <p class="text-blue-600 font-semibold">Career Goals & Vision</p>
+      </div>
+      <input class="mt-4 w-full px-3 py-2 border border-gray-300 rounded-md" name="goals">
+    </div>
+
+    <div class="mt-5 shadow rounded border border-gray-300 p-5 bg-white">
+      <div class="flex items-center">
+        <p class="mr-3 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">4</p>
+        <p class="text-blue-600 font-semibold">Preferred Work Type</p>
+      </div>
+      <div class="mt-4 flex flex-col sm:flex-row gap-3 sm:justify-around">
+        <label><input type="radio" name="work_type" value="Startup"> Startup</label>
+        <label><input type="radio" name="work_type" value="Corporate"> Corporate</label>
+        <label><input type="radio" name="work_type" value="Freelance"> Freelance</label>
+      </div>
+    </div>
+
+    <div class="mt-5 shadow rounded border border-gray-300 p-5 bg-white">
+      <div class="flex items-center">
+        <p class="mr-3 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">5</p>
+        <p class="text-blue-600 font-semibold">Industry Awareness</p>
+      </div>
+      <div class="mt-4">
+        <label>What IT trends interest you most right now?</label>
+        <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="awareness">
+      </div>
+    </div>
+
+    <div class="mt-5 shadow rounded border border-gray-300 p-5 bg-white">
+      <div class="flex items-center">
+        <p class="mr-3 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">6</p>
+        <p class="text-blue-600 font-semibold">Soft Skills & Team Fit</p>
+      </div>
+      <div class="mt-4">
+        <label>How do you handle teamwork?</label>
+        <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="soft_skills">
+      </div>
+    </div>
+
+    <div class="mt-5 shadow rounded border border-gray-300 p-5 bg-white">
+      <label>Paste your CV summary (optional)</label>
+      <textarea name="cv_summary" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+    </div>
+
+    <div class="mt-6 mb-10 flex justify-center">
+      <input type="submit" value="Submit Quiz"
+        class="bg-green-600 h-[40px] w-[200px] rounded text-white font-bold shadow-md hover:bg-green-700 transition">
+    </div>
+  </form>
 </body>
+
 </html>
