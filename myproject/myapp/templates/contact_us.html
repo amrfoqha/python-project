@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CareerPilot</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <script src="https://cdn.tailwindcss.com"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}" />
 
@@ -46,16 +45,13 @@
         });
     </script>
 </head>
-
 <body>
-
     <div class="flex justify-between bg-[#1e3a8a] h-[80px] items-center">
         <a href="/" class="md:ml-[25px] ml-5 mr-7  text-[#fff] md:text-[25px] font-[700] ">
             <h1>CareerPilot</h1>
         </a>
         <div class=" text-[#fff] flex justify-center w-[600px] ">
             <div class="flex text-[9px] lg:text-xl md:text-xl font-medium md:flex-row gap-3 md:gap-6 text-white items-center">
-                <a href="/contact_us">Contact us</a>
                 <a href="{% url 'home' %}#who_we_are">Who we are</a>
                 <a href="/">Home</a>
             </div>
@@ -102,79 +98,35 @@
         </div>
     </div>
 
-    <div class="bg-[#1d2a4e] text-white text-center py-20">
-        <h1 class="text-5xl font-bold mb-4">
-            Start Your Career Journey with CareerPilot
-        </h1>
-        <p class="text-xl mb-8">
-            A comprehensive platform that helps you discover your career path and
-            develop your skills to reach your dream job
-        </p>
-        <a href="/view_login" class="bg-white text-[#1d2a4e] font-bold py-2 px-4 rounded">Get Started
-        </a>
+    <p class="text-center font-[700] text-[150%] text-[#1e3a8a] mb-[5%] mt-[3%]">
+    We welcome you to contact us with any questions or comments. Our team is ready to assist you at any time.
+    </p>
+
+<form action="new_message" method="POST" class="max-w-lg mx-auto bg-white p-8  shadow-md rounded-2xl border-2 border-[#5b73b6] shadow-[#1e3a8a]">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Full Name</label>
+        <input type="text" name="name" class="w-full border p-2 rounded-lg" required>
     </div>
-
-    <div class="bg-gray-200 text-center py-20">
-        <h2 class="text-3xl font-bold mb-12">How Can We Help You?</h2>
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-lg shadow-lg text-center">
-                <img src="{% static 'pngtree-colorful-archery-target-with-arrow-hitting-bullseye-png-image_14078548.png' %}"
-                    alt="Skill Assessment" class="w-16 h-16 mx-auto mb-4" />
-                <h3 class="text-2xl font-bold mb-4">Skill Assessment</h3>
-                <p>
-                    Evaluate your current skills and discover areas that need
-                    Development.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-lg text-center">
-                <img src="{% static 'skill-dev.png' %}" alt="Career Path" class="w-16 h-16 mx-auto mb-4" />
-                <h3 class="text-2xl font-bold mb-4">Career Path</h3>
-                <p>
-                    Get personalized recommendations for career paths that match your
-                    skills and interest
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-lg text-center">
-                <img src="{% static '161432114-161432114-BSRG19240119_00-2100.webp' %}" alt="Job Placement"
-                    class="w-16 h-16 mx-auto mb-4" />
-                <h3 class="text-2xl font-bold mb-4">Professional Development</h3>
-                <p>about us</p>
-            </div>
-        </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Email Address</label>
+        <input type="email" name="email" class="w-full border p-2 rounded-lg" required>
     </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Message</label>
+        <textarea name="message" rows="5" class="w-full border p-2 rounded-lg" required></textarea>
     </div>
+    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+        Send
+    </button>
+</form>
 
-    <div class="bg-gray-100 py-20" id="who_we_are">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-12">Development Team</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 w-[80%] ml-[10%] gap-8">
 
-                <a href="https://github.com/amrfoqha" target="_blank"  class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
-                    <div class="flex justify-center mt-[5%] mb-4">
-                        <img src="{% static 'amr.jpeg' %}" class="w-[70%] rounded-2xl" alt="">
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Amr Foqha</h3>
-                    <p class="text-gray-600">Full Stack Developer</p>
-                </a>
-
-                <a href="https://github.com/ahmadbadwann" target="_blank"  class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 ">
-                    <div class="flex justify-center mt-[5%]  mb-4">
-                        <img src="{% static 'ahmad.jpeg' %}" alt="" class="w-[70%] rounded-2xl" >
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Ahmad Badwan</h3>
-                    <p class="text-gray-600">Full Stack Developer</p>
-                </a>
-
-            </div>
-        </div>
-    </div>
-    <footer class="bg-gray-800 text-white text-center p-4">
+    <footer class="mt-[3%] bottom-0 left-0 w-full bg-gray-800 text-white text-center p-4">
         <p>&copy; 2025 CareerPilot.
             <br>
             All rights reserved. Designed to help you find your dream job.
         </p>
     </footer>
-
 </body>
-
 </html>

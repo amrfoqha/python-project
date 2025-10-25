@@ -6,9 +6,7 @@ import os
 from django.core.files.storage import default_storage
 from django.conf import settings
 import json
-import requests
 from .models import User, Result
-from docx import Document
 import PyPDF2
 from myproject import settings
 
@@ -62,7 +60,7 @@ def view_quze(request):
 
 
 def submit_quze(request):
-    if submit_form(request):
+    if chack_form(request):
         return redirect('/view_result')
     return redirect('/view_quze')
 
@@ -88,39 +86,41 @@ def result_view(request):
 
 def submit_form(request):
     if request.method == "POST":
-        
-        user_id = request.session.get('user_id')
-        if not user_id:
-            messages.error(request, "User session expired. Please try again.")
-            return redirect("/view_quze")
+        if chack_form(request):
+            user_id = request.session.get('user_id')
+            if not user_id:
+                messages.error(request, "User session expired. Please try again.")
+                return redirect("/view_quze")
+            quiz_data = request.POST.dict()  
+            cv_summary = ""
 
-        quiz_data = request.POST.dict()  
-        cv_summary = ""
 
         # قراءة ملف CV إذا موجود
-        if "cv_file" in request.FILES:
-            cv_file = request.FILES["cv_file"]
-            if cv_file.name.endswith(".pdf"):
-                reader = PyPDF2.PdfReader(cv_file)
-                for page in reader.pages:
-                    cv_summary += page.extract_text() + "\n"
+            if "cv_file" in request.FILES:
+                cv_file = request.FILES["cv_file"]
+                if cv_file.name.endswith(".pdf"):
+                    reader = PyPDF2.PdfReader(cv_file)
+                    for page in reader.pages:
+                        cv_summary += page.extract_text() + "\n"
 
-        if not quiz_data and not cv_summary:
-            messages.error(request, "Please fill the form or upload a CV.")
-            return redirect("/view_quze")
+            if not quiz_data and not cv_summary:
+                messages.error(request, "Please fill the form or upload a CV.")
+                return redirect("/view_quze")
 
 
-        result = analyze_user_data(user_id, quiz_data if quiz_data else {}, cv_summary)
+            result = analyze_user_data(user_id, quiz_data if quiz_data else {}, cv_summary)
 
-        try:
-            full_data = json.loads(result.full_json)
-        except:
-            full_data = {}
+            try:
+                full_data = json.loads(result.full_json)
+            except:
+                full_data = {}
 
-        return redirect('/view_result')
-
+            return redirect('/view_result')
+        else:
+            
+            return redirect('view_quze')
     return redirect('/view_quze')
-
+    
 
 
 def view_cv_form(request):
@@ -185,3 +185,16 @@ def view_result_by_id(request,result_id):
         }
         return render(request, "result.html", context) 
     return redirect('/')    
+
+def contact_us(request):
+    user=get_user_by_id(request.session['user_id'])
+    context={
+        "user" :user
+    }
+    return render(request,'contact_us.html',context)
+
+
+def new_message(request):
+    if create_new_message(request):
+        return redirect('/contact_us')
+    return redirect('/contact_us')

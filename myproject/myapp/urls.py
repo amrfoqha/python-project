@@ -18,7 +18,8 @@ urlpatterns =[
     path('toggle_change_password',views.toggle_change_password),
     path('change_password',views.change_password),
     path('view_result/<int:result_id>',views.view_result_by_id),
-    
+    path('contact_us',views.contact_us),
+    path('new_message',views.new_message)
     
 
 ]
