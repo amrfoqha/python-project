@@ -44,7 +44,7 @@
     <a href="/" class="text-white text-2xl font-bold">CareerPilot</a>
     <div class="flex items-center gap-4">
       <div class="flex text-[9px] lg:text-xl md:text-xl font-medium md:flex-row gap-3 md:gap-6 text-white items-center">
-        <a href="">Contact us</a>
+        <a href="/contact_us">Contact us</a>
         <a href="{% url 'home' %}#who_we_are">Who we are</a>
         <a href="/">Home</a>
       </div>
@@ -105,7 +105,7 @@
 
   <form action="/submit_form" method="POST" class="max-w-2xl mx-auto mt-6 px-4">
     {% csrf_token %}
-    <div class="shadow rounded border border-gray-300 p-5 bg-white">
+    <div class="shadow rounded border border-gray-300 p-5 bg-white ">
       <div class="flex items-center">
         <p class="mr-3 w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">1</p>
         <p class="text-blue-600 font-semibold">General Background & Motivation</p>
@@ -114,14 +114,34 @@
         <div>
           <label>Why did you choose to study IT?</label>
           <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="background">
+          {% for message in messages %}
+          {% if "background" in message.tags %}
+          <p class="text-red-600  text-sm">{{ message }}</p>
+          {% endif %}
+          {% endfor %}
         </div>
+
+
+
         <div>
           <label>Which IT fields interest you most?</label>
           <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="interest">
+          {% for message in messages %}
+          {% if "interest" in message.tags %}
+          <p class="text-red-600  text-sm">{{ message }}</p>
+          {% endif %}
+          {% endfor %}
         </div>
+
+
         <div>
           <label>What was your favorite subject or project and why?</label>
           <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="project">
+        {% for message in messages %}
+        {% if "project" in message.tags %}
+        <p class="text-red-600  text-sm">{{ message }}</p>
+        {% endif %}
+        {% endfor %}
         </div>
       </div>
     </div>
@@ -135,10 +155,20 @@
         <div>
           <label>Which programming languages are you confident in?</label>
           <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="skills">
+          {% for message in messages %}
+          {% if "skills" in message.tags %}
+          <p class="text-red-600  text-sm">{{ message }}</p>
+          {% endif %}
+          {% endfor %}
         </div>
         <div>
           <label>What personal or academic project are you proud of?</label>
           <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="experience">
+          {% for message in messages %}
+          {% if "experience" in message.tags %}
+          <p class="text-red-600  text-sm">{{ message }}</p>
+          {% endif %}
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -149,6 +179,11 @@
         <p class="text-blue-600 font-semibold">Career Goals & Vision</p>
       </div>
       <input class="mt-4 w-full px-3 py-2 border border-gray-300 rounded-md" name="goals">
+      {% for message in messages %}
+      {% if "goals" in message.tags %}
+      <p class="text-red-600  text-sm">{{ message }}</p>
+      {% endif %}
+      {% endfor %}
     </div>
 
     <div class="mt-5 shadow rounded border border-gray-300 p-5 bg-white">
@@ -160,6 +195,11 @@
         <label><input type="radio" name="work_type" value="Startup"> Startup</label>
         <label><input type="radio" name="work_type" value="Corporate"> Corporate</label>
         <label><input type="radio" name="work_type" value="Freelance"> Freelance</label>
+        {% for message in messages %}
+        {% if "work_type" in message.tags %}
+        <p class="text-red-600  text-sm">{{ message }}</p>
+        {% endif %}
+        {% endfor %}
       </div>
     </div>
 
@@ -171,6 +211,11 @@
       <div class="mt-4">
         <label>What IT trends interest you most right now?</label>
         <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="awareness">
+        {% for message in messages %}
+        {% if "awareness" in message.tags %}
+        <p class="text-red-600  text-sm">{{ message }}</p>
+        {% endif %}
+        {% endfor %}
       </div>
     </div>
 
@@ -182,6 +227,11 @@
       <div class="mt-4">
         <label>How do you handle teamwork?</label>
         <input class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md" name="soft_skills">
+        {% for message in messages %}
+        {% if "soft_skill" in message.tags %}
+        <p class="text-red-600  text-sm">{{ message }}</p>
+        {% endif %}
+        {% endfor %}
       </div>
     </div>
 

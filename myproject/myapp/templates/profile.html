@@ -64,7 +64,7 @@
   <div class="flex flex-wrap justify-between bg-[#1e3a8a] h-auto py-4 px-4 items-center">
     <a href="/" class="text-white text-2xl font-bold">CareerPilot</a>
     <div class="flex flex-wrap justify-center items-center gap-4 text-white">
-      <a href="">Contact us</a>
+      <a href="/contact_us">Contact us</a>
       <a href="{% url 'home' %}#who_we_are">Who we are</a>
       <a href="/">Home</a>
       <a href="/view_quze">Retake the Test</a>
@@ -93,7 +93,7 @@
   </div>
 
   <div class="flex flex-col lg:flex-row justify-around items-start gap-8 mt-8 px-4 {% if request.session.change_password %}blur-sm{% endif %}">
-    <form action="/edit_info" method="post" enctype="multipart/form-data" class="shadow rounded border border-[#aba3a3] p-5 w-full max-w-md mx-auto">
+    <form action="/edit_info" method="post" class=" shadow-md  rounded border-2 border-[#5b73b6] shadow-[#1e3a8a] p-5 w-full max-w-md mx-auto">
       {% csrf_token %}
       <div class="relative mb-4 text-center mt-6">
         <img src="{{user.avatar.url}}" class="w-32 h-32 rounded-full object-cover border-4 mx-auto border-blue-500 shadow-lg mb-5">
@@ -183,7 +183,7 @@
       {% endif %}
     </form>
 
-    <div class="overflow-x-auto w-full lg:w-2/4 shadow rounded border border-[#aba3a3]">
+    <div class="overflow-x-auto w-full lg:w-2/4  shadow-md rounded border-2 border-[#5b73b6] shadow-[#1e3a8a]">
       <table class="w-full bg-white">
         <thead class="bg-[#1e3a8a]">
           <tr>

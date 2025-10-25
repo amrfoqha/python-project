@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect
 from .models import *
 from .integration import analyze_user_data
 from django.contrib import messages
@@ -6,9 +6,6 @@ import os
 from django.core.files.storage import default_storage
 from django.conf import settings
 import json
-import requests
-from .models import User, Result
-from docx import Document
 import PyPDF2
 from myproject import settings
 
@@ -86,60 +83,66 @@ def submit_quze(request):
         return redirect('/view_quze')
     return redirect('/')
 
+
+
 def result_view(request):
-    if request.method=="POST":
-        if request.session['logged_in']:
-            user=get_user_by_id(request.session['user_id'])
-            result = Result.objects.filter(user=user).last()
+   
+    if request.session['logged_in']:
+        user=get_user_by_id(request.session['user_id'])
+        result = Result.objects.filter(user=user).last()
 
-            context = {
-                "user": user,
-                "result": result,
-                "confidence_percentage":int(result.confidence_level*100),
-                'companies':get_companies()
+        context = {
+            "user": user,
+            "result": result,
+            "confidence_percentage":int(result.confidence_level*100),
+            'companies':get_companies()
             }
-            return render(request, "result.html", context) 
-    return redirect('/')
-
+        return render(request, "result.html", context) 
+   
 
 
 
 
 
 def submit_form(request):
-    if request.method == "POST":
-        user_id = request.session.get('user_id')
-        if not user_id:
-            messages.error(request, "User session expired. Please try again.")
+    if request.method != "POST":
+        return redirect("/view_quze")
+
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "User session expired. Please try again.")
+        return redirect("/view_quze")
+
+    quiz_data = {k: v for k, v in request.POST.items() if k != 'csrfmiddlewaretoken'}
+    cv_summary = ""
+
+    cv_file = request.FILES.get("cv_file")
+    if cv_file and cv_file.name.endswith(".pdf"):
+        reader = PyPDF2.PdfReader(cv_file)
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                cv_summary += text + "\n"
+
+    if quiz_data:
+        if not check_form(request):
             return redirect("/view_quze")
 
-        quiz_data = request.POST.dict()  
-        cv_summary = ""
+    if not quiz_data and not cv_summary:
+        messages.error(request, "Please fill the form or upload a CV.")
+        return redirect("/view_quze")
 
-        # قراءة ملف CV إذا موجود
-        if "cv_file" in request.FILES:
-            cv_file = request.FILES["cv_file"]
-            if cv_file.name.endswith(".pdf"):
-                reader = PyPDF2.PdfReader(cv_file)
-                for page in reader.pages:
-                    cv_summary += page.extract_text() + "\n"
+    result = analyze_user_data(user_id, quiz_data if quiz_data else {}, cv_summary if cv_summary else "")
 
-        if not quiz_data and not cv_summary:
-            messages.error(request, "Please fill the form or upload a CV.")
-            return redirect("/view_quze")
+    try:
+        full_data = json.loads(result.full_json)
+    except Exception:
+        full_data = {}
+
+    return redirect("/view_result")
 
 
-        result = analyze_user_data(user_id, quiz_data if quiz_data else {}, cv_summary)
-
-        try:
-            full_data = json.loads(result.full_json)
-        except:
-            full_data = {}
-
-        return redirect('/view_result')
-
-    return redirect('/view_quze')
-
+    
 
 
 def view_cv_form(request):
@@ -241,3 +244,17 @@ def edit_user(request):
     else:
         return redirect(f'/view_edit_user/{id}')
         
+        return render(request, "result.html", context) 
+    return redirect('/')    
+
+def contact_us(request):
+    context={
+        "user" :get_user_by_id(request.session['user_id'])
+    }
+    return render(request,'contact_us.html',context)
+
+
+def new_message(request):
+    if create_new_message(request):
+        return redirect('/contact_us')
+    return redirect('/contact_us')

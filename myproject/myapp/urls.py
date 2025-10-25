@@ -10,7 +10,7 @@ urlpatterns =[
     path('view_quze',views.view_quze),
     path('view_result',views.result_view),
     path('view_cv_form',views.view_cv_form),
-    path('submit_form',views.submit_quze),
+    path('submit_form',views.submit_form),
     path('logout',views.logout),
     path('profile',views.profile),
     path('edit_info',views.edit_info),
@@ -22,4 +22,9 @@ urlpatterns =[
     path('delete_user/<int:id>',views.delete_user),
     path('view_edit_user/<int:id>',views.view_edit_user),
     path('edit_user',views.edit_user),
+    path('contact_us',views.contact_us),
+    path('new_message',views.new_message)
+    
+
+
 ]
