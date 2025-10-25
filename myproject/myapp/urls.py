@@ -18,7 +18,8 @@ urlpatterns =[
     path('toggle_change_password',views.toggle_change_password),
     path('change_password',views.change_password),
     path('view_result/<int:result_id>',views.view_result_by_id),
-    
-    
-
+    path('view_dashboard',views.view_dashboard),
+    path('delete_user/<int:id>',views.delete_user),
+    path('view_edit_user/<int:id>',views.view_edit_user),
+    path('edit_user',views.edit_user),
 ]

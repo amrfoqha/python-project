@@ -28,58 +28,78 @@ def root(request):
     
 
 def view_register(request):
-    
+    if request.session['logged_in']:
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
     return render(request,'registration.html')
 def view_login(request):
     if request.session['logged_in']:
-        return redirect('/view_quze')
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
     return render(request,'login.html')
 
 
 
 
 def register(request):
-    if create_new_user(request):
-        return redirect('/view_login')
+    if request.session['logged_in']:
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
+    if request.method=="POST":    
+        if create_new_user(request):
+            return redirect('/view_login')
     return redirect('/view_register')
 
 
-
 def login(request):
-    if login_user(request):
-        return redirect('/view_quze')
-    return redirect('/view_login')
+    if request.session['logged_in']:
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
+    if request.method=="POST":
+        if login_user(request):
+            if is_admin(request.session['user_id']):
+                return redirect('/view_dashboard')
+            return redirect('/view_quze')
+        return redirect('/view_login')
+    return redirect('/')
 
 
 def view_quze(request):
-    
-    if request.session['logged_in'] :    
-        context = {
-            "user":get_user_by_id(request.session['user_id'])
-        }
-        return render(request,'quize.html',context)
-    return redirect('/view_login')
+    if not is_admin(request.session['user_id']):
+        if request.session['logged_in'] :    
+            context = {
+                "user":get_user_by_id(request.session['user_id'])
+            }
+            return render(request,'quize.html',context)
+        return redirect('/view_login')
+    return redirect('/')
 
 
 def submit_quze(request):
-    if submit_form(request):
-        return redirect('/view_result')
-    return redirect('/view_quze')
+    if request.method=="POST":
+        if submit_form(request):
+            return redirect('/view_result')
+        return redirect('/view_quze')
+    return redirect('/')
 
 def result_view(request):
-    
-    if request.session['logged_in']:
-        user=get_user_by_id(request.session['user_id'])
-        result = Result.objects.filter(user=user).last()
+    if request.method=="POST":
+        if request.session['logged_in']:
+            user=get_user_by_id(request.session['user_id'])
+            result = Result.objects.filter(user=user).last()
 
-        context = {
-            "user": user,
-            "result": result,
-            "confidence_percentage":int(result.confidence_level*100),
-            'companies':get_companies()
-        }
-        return render(request, "result.html", context) 
-    return redirect('/')  
+            context = {
+                "user": user,
+                "result": result,
+                "confidence_percentage":int(result.confidence_level*100),
+                'companies':get_companies()
+            }
+            return render(request, "result.html", context) 
+    return redirect('/')
 
 
 
@@ -88,7 +108,6 @@ def result_view(request):
 
 def submit_form(request):
     if request.method == "POST":
-        
         user_id = request.session.get('user_id')
         if not user_id:
             messages.error(request, "User session expired. Please try again.")
@@ -124,21 +143,22 @@ def submit_form(request):
 
 
 def view_cv_form(request):
-    if request.session['logged_in'] :    
-        context = {
-            "user":get_user_by_id(request.session['user_id'])
-        }
-        return render(request,'cv_form.html',context)
-    return redirect('/view_login')
     
+        if request.session['logged_in'] :    
+            context = {
+                "user":get_user_by_id(request.session['user_id'])
+            }
+            return render(request,'cv_form.html',context)
+        return redirect('/view_login')
+    
+
 def logout(request):
     del request.session['user_id']
-    del request.session['logged_in']
-    
-    
+    del request.session['logged_in']    
     return redirect('/')
 
 def profile(request):
+    
     if 'toggle_form' not in request.session:
         request.session['toggle_form']=False
     if 'change_password' not in request.session:
@@ -154,9 +174,11 @@ def profile(request):
     return redirect('/')
 
 def edit_info(request):
-    if change_info(request):
-        return redirect('/toggle_edit_profile')
-    return redirect('/profile')
+
+        if change_info(request):
+            return redirect('/toggle_edit_profile')
+        return redirect('/profile')
+
 
 def toggle_edit_profile(request):
     request.session['toggle_form']= not request.session['toggle_form']
@@ -173,15 +195,49 @@ def change_password(request):
         return redirect('/profile')
     
 def view_result_by_id(request,result_id):
-    if request.session['logged_in']:
-        user=get_user_by_id(request.session['user_id'])
-        result = Result.objects.get(id=result_id)
+    if not is_admin(request.session['user_id']):
+        if request.session['logged_in']:
+            user=get_user_by_id(request.session['user_id'])
+            result = Result.objects.get(id=result_id)
 
-        context = {
-            "user": user,
-            "result": result,
-            "confidence_percentage":int(result.confidence_level*100),
-            'companies':get_companies()
+            context = {
+                "user": user,
+                "result": result,
+                "confidence_percentage":int(result.confidence_level*100),
+                'companies':get_companies()
+            }
+            return render(request, "result.html", context) 
+        return redirect('/')
+    return redirect('/view_profile')    
+
+def view_dashboard(request):
+    if is_admin(request.session['user_id']):
+        context={
+            'user':get_user_by_id(request.session['user_id']),
+            'all_clients':get_all_client()
         }
-        return render(request, "result.html", context) 
-    return redirect('/')    
+        return render(request,'dashboard.html',context)
+    return redirect('/')
+
+def delete_user(request,id):
+    if is_admin(request.session['user_id']):
+        del_user(id)
+        return redirect('/view_dashboard')
+    return redirect('/')
+
+def view_edit_user(request,id):
+    if is_admin(request.session['user_id']):
+        context={
+            'client':get_user_by_id(id),
+            'user':get_user_by_id(request.session['user_id'])
+        }
+        return render(request,'edit_user.html',context)
+    return redirect('/view_profile')
+
+def edit_user(request):
+    id=request.POST['hidden']
+    if modify_user(request,id):
+        return redirect('/view_dashboard')
+    else:
+        return redirect(f'/view_edit_user/{id}')
+        
