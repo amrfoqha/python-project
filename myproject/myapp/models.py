@@ -2,6 +2,7 @@ import re
 from django.db import models
 from django.contrib import messages
 import bcrypt
+from django.db.models import Avg
 
 class UserManager(models.Manager):
     def validator_login(self, postData):
@@ -11,13 +12,13 @@ class UserManager(models.Manager):
         else:
             pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')
             if not pattern.match(postData['email']):
-                errors['email'] = 'email is invalid'
+                errors['email'] = 'Wrong password or email'
             elif not is_exists(postData['email']):
-                errors['email'] = 'email is invalid'
-        if len(postData['password'])==0:
-            errors['password']='password should be filled'
-        elif len(postData['password'])<8:
-            errors['password'] = "should be at least 8 characters"
+                errors['email'] = 'Wrong password or email'
+            elif len(postData['password'])==0:
+                errors['password']='password should be filled'
+            elif len(postData['password'])<8:
+                errors['password'] = "Wrong password or email"
         return errors
     def validator_reg(self, postData):
         errors = {}
@@ -31,12 +32,14 @@ class UserManager(models.Manager):
             pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
             if not pattern.match(postData['email']):
                 errors['email'] = 'email is invalid'
+            elif is_exists(postData['email']):
+                errors['email'] = 'email is already exists'    
         if len(postData['phone'])<10:
             errors['phone'] = "inValid phone number"
         if len(postData['password'])==0:
             errors['password']='password should be filled'
         elif len(postData['password'])<8:
-            errors['password'] = "should be at least 8 characters"
+            errors['password'] = "Password should be at least 8 characters"
         if postData['password']!=postData['con_password']:
             errors['password'] = "password must be matched"
         return errors
@@ -75,6 +78,37 @@ class UserManager(models.Manager):
         if len(postData.get('q16', '').strip()) == 0:
             errors['q16'] = "Please describe how you handle pressure or deadlines."
         return errors
+    
+    def validator_change_password(self, postData):
+        errors = {}
+        if len(postData['new_password'])<=0:
+            errors['new_password'] = "Password must be filled"
+        elif  len(postData['new_password'])<=8:   
+            errors['new_password'] = "Password must be at least 8 characters"
+        elif len(postData['confirm_password'])<=0:
+            errors['confirm_password'] = "Password must be filled"
+        elif len(postData['confirm_password'])<=8:   
+            errors['new_password'] = "Password must be at least 8 characters"      
+        elif postData['new_password'] != postData['confirm_password']:
+                errors['password'] = "Password not matched"
+        return errors
+    def validator_change_info(self, postData):
+        errors = {}
+        if len(postData['first_name']) <= 0 :
+            errors['first_name'] = "Name must be filed"
+        if len(postData['last_name'])<=0:
+            errors['last_name']="Name must be filed"
+        if len(postData['email'])<=0:
+            errors['email']='email must be filled'
+        else:    
+            pattern = re.compile(r'^[a-z.A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
+            if not pattern.match(postData['email']):
+                errors['email'] = 'email is invalid'
+            elif is_exists(postData['email']):
+                errors['email'] = 'email is already exists'    
+        if len(postData['phone'])<10:
+            errors['phone'] = "inValid phone number"
+        return errors
 
 # Create your models here.
 class User(models.Model):
@@ -83,19 +117,29 @@ class User(models.Model):
     email=models.EmailField(max_length=55)
     phone=models.CharField(max_length=15)
     location=models.CharField(max_length=100)
-    password=models.CharField(max_length=45)
+    password=models.CharField(max_length=255)
     level=models.IntegerField(default=1)
     avatar=models.URLField(max_length=400,default="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
     objects = UserManager()
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
 
 class Result(models.Model):
-    description=models.TextField()
-    recomindation=models.CharField(max_length=100)
+    career_recommendation=models.TextField()
+    confidence_level=models.FloatField(null=True, blank=True)
+    key_strengths=models.TextField(null=True, blank=True)
+    personality_traits=models.TextField(null=True, blank=True)
+    nearest_companies=models.TextField(null=True, blank=True)
+    reasoning=models.TextField(null=True, blank=True)
+    recommended_skills_to_learn=models.TextField(null=True, blank=True)
+    growth_opportunities=models.TextField()
     user=models.ForeignKey(User,related_name='results',on_delete=models.CASCADE)
-    result=models.CharField(max_length=100)
-
-def get_user_by_id(email,password):
-    return User.objects.get(email=email,password=password)
+    objects = UserManager()
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
+    
+def get_user_by_id(user_id):
+    return User.objects.get(id=user_id)
 
 
 def create_user(first_name, last_name, email,phone,location, password,level):
@@ -122,7 +166,7 @@ def create_new_user(request):
 
 
 def search_email(email):
-    return User.objects.filter(email=email)
+    return User.objects.filter(email=email)[0]
 def login_user(request):
     email=request.POST['email']
     password=request.POST['password']
@@ -146,6 +190,9 @@ def login_user(request):
 def is_exists(email):
     return User.objects.filter(email=email).exists()
 
+def is_exists_exclude(email):
+    return User.objects.filter(email=email).exclude(id=request.session['user_id']).exists()
+
 
 def submit_form(request):
         errors = User.objects.validator_form(request.POST)
@@ -157,5 +204,76 @@ def submit_form(request):
             messages.success(request, "Form submitted successfully!")
             return True
 
+        
 
 
+
+def get_all_results(user_id):
+    return Result.objects.filter(user__id=user_id)
+
+def get_average_confidence(user_id):
+    avg=Result.objects.filter(user__id=user_id).aggregate(a=Avg('confidence_level'))
+    return avg['a']
+
+def get_companies():
+    res=Result.objects.last()
+    
+    company_list = res.nearest_companies.split('%')
+    list_of_companies = []
+
+    for el in company_list:
+        arr = el.strip().split('-')
+        name = arr[0].strip()
+
+        roles = [r.strip() for r in arr[1].split(',')] if len(arr) > 1 else []
+        
+        list_of_companies.append({
+            'name': name,
+            'roles': roles
+        })
+
+    print(list_of_companies)
+    return list_of_companies
+
+def change_password_check(request):
+    object=UserManager()
+    errors=object.validator_change_password(request.POST)
+    if len(errors)>0:
+        for key,val in errors.items():
+            messages.error(request,val,extra_tags=f"change_pass__{key}")
+        return False
+    else:
+        user=get_user_by_id(request.session['user_id'])
+        hash_pass=bcrypt.hashpw(request.POST['new_password'].encode(),bcrypt.gensalt()).decode()
+        user.password= hash_pass
+        user.save()
+        return True
+    
+def change_info(request):    
+    object=UserManager()
+    errors=object.validator_change_info(request.POST)
+    if len(errors)>0:
+        for key,val in errors.items():
+            messages.error(request,val,extra_tags=f"change_info__{key}")
+        return False
+    else:
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=request.POST['email']
+        phone=request.POST['phone']
+        location=request.POST['location']
+        avatar=request.POST['avatar']
+        user=get_user_by_id(request.session['user_id'])
+        
+        user.first_name=first_name
+        user.last_name=last_name
+        
+        user.phone=phone
+        user.location=location
+        if avatar:
+            user.avatar=avatar
+        if email != user.email:
+                user.email=email
+        user.save()    
+        return True
+            

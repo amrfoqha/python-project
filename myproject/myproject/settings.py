@@ -18,8 +18,12 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
-
+# DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+# DEEPSEEK_API_KEY = "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"
+# CHATGPT_API_KEY ="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"
+# GEMINI_API_KEY ="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"
+# DEEPSEEK_API_KEY = "1ac6b5c6698c9e0ed9e629c8a24bc39b"
+DEEPSEEK_API_KEY = "sk-f1696c3919d344d69d2f58d7291a4d9a"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -82,9 +86,9 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'python_project',
+        'NAME': 'career_pilot',
         'USER': 'root',  
-        'PASSWORD': '2471',    
+        'PASSWORD': 'root123',    
         'HOST': 'localhost',
         'PORT': '3306',  
     }
