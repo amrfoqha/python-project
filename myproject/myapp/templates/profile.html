@@ -134,7 +134,8 @@
             class="w-full bg-white border">
         </div>
         <div>
-          <p class="text-[#877b7b]">Place</p>
+          <p class="text-[#877b7b] mb-2">Place</p>
+          {% if request.session.toggle_form %}
           <select name="location" id="location" required {% if not request.session.toggle_form %} disabled {% endif %}
             class="border border-gray-300 rounded-md w-full pl-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
             <option value="Nablus">Nablus</option>
@@ -144,6 +145,13 @@
             <option value="Jericho">Jericho</option>
             <option value="Jenin">Jenin</option>
           </select>
+          
+          {% else %}
+          <label   {% if not request.session.toggle_form %} disabled {% endif %}
+            class="border border-gray-300 pr-10  rounded-md w-full pl-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+            {{user.location}}
+          </label>
+          {% endif %}
         </div>
         <div>
           <p class="text-[#877b7b]">Joining date</p>
