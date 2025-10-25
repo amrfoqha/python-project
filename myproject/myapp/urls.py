@@ -17,6 +17,8 @@ urlpatterns =[
     path('toggle_edit_profile',views.toggle_edit_profile),
     path('toggle_change_password',views.toggle_change_password),
     path('change_password',views.change_password),
+    path('view_result/<int:result_id>',views.view_result_by_id),
+    
     
 
 ]
