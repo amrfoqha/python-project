@@ -64,14 +64,14 @@
   <div class="flex flex-wrap justify-between bg-[#1e3a8a] h-auto py-4 px-4 items-center">
     <a href="/" class="text-white text-2xl font-bold">CareerPilot</a>
     <div class="flex flex-wrap justify-center items-center gap-4 text-white">
-      <a href="">Contact us</a>
+      <a href="/contact_us">Contact us</a>
       <a href="{% url 'home' %}#who_we_are">Who we are</a>
       <a href="/">Home</a>
       <a href="/view_quze">Retake the Test</a>
       <div class="relative">
         <button type="button" id="dropdownToggle"
           class="px-4 py-2 flex items-center rounded-lg text-white text-sm font-medium border border-slate-300 outline-none hover:bg-slate-100/10 cursor-pointer">
-          <img src="{{user.avatar}}" class="w-7 h-7 mr-3 rounded-full shrink-0">
+          <img src="{{user.avatar.url}}" class="w-7 h-7 mr-3 rounded-full shrink-0">
           <span>{{user.last_name}}</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-slate-400 inline ml-3" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
@@ -96,10 +96,10 @@
     <form action="/edit_info" method="post" class=" shadow-md  rounded border-2 border-[#5b73b6] shadow-[#1e3a8a] p-5 w-full max-w-md mx-auto">
       {% csrf_token %}
       <div class="relative mb-4 text-center mt-6">
-        <img src="{{user.avatar}}" class="w-32 h-32 rounded-full object-cover border-4 mx-auto border-blue-500 shadow-lg">
+        <img src="{{user.avatar.url}}" class="w-32 h-32 rounded-full object-cover border-4 mx-auto border-blue-500 shadow-lg mb-5">
         {% if request.session.toggle_form %}
-        <input type="text" name="avatar_url" value="{{user.avatar}}" placeholder="enter url for the avatar"
-          class="border mt-4 text-xs w-2/3 h-8 text-[#3457b9] font-medium text-center bg-white">
+        <label for="img" class="mb-2 font-semibold text-gray-700">Select image:</label>
+        <input type="file" name="img" class="border border-gray-400 p-2 rounded mb-4">
         {% endif %}
       </div>
       <div class="flex flex-col items-center mb-4">

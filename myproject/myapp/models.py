@@ -95,6 +95,15 @@ class UserManager(models.Manager):
         if len(postData['phone'])<10:
             errors['phone'] = "inValid phone number"
         return errors
+    def validator_edit_info(self, postData):
+        errors = {}
+        if len(postData['first_name']) <= 0 :
+            errors['first_name'] = "Name must be filed"
+        if len(postData['last_name'])<=0:
+            errors['last_name']="Name must be filed"
+            if len(postData['message']) <=0 :
+                errors['message']='message must be filed'
+        return errors
     
     def validator_message(self,postData):
         errors = {}
@@ -106,9 +115,11 @@ class UserManager(models.Manager):
             pattern = re.compile(r'^[a-z.-_A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
             if not pattern.match(postData['email']):
                 errors['email'] = 'email is invalid'
-        if len(postData['message']) <=0 :
-            errors['message']='message must be filed'
+        if len(postData['phone'])<10:
+            errors['phone'] = "inValid phone number"
         return errors
+
+        
 # Create your models here.
 class User(models.Model):
     first_name=models.CharField(max_length=45)
@@ -118,7 +129,7 @@ class User(models.Model):
     location=models.CharField(max_length=100)
     password=models.CharField(max_length=255)
     level=models.IntegerField(default=1)
-    avatar=models.URLField(max_length=400,default="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+    avatar=models.FileField(upload_to='uploads/',default='uploads/blank-profile-picture-973460_1280.webp')
     objects = UserManager()
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
@@ -137,6 +148,7 @@ class Result(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
+    
 
 class Message(models.Model):
     message=models.TextField()
@@ -147,11 +159,8 @@ class Message(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
 
-
-
 def get_user_by_id(user_id):
     return User.objects.get(id=user_id)
-
 
 def create_user(first_name, last_name, email,phone,location, password,level):
     User.objects.create(first_name=first_name,last_name=last_name, email=email, phone=phone,location=location, password=password,level=level)
@@ -174,7 +183,8 @@ def create_new_user(request):
     return True        
 
 
-
+def get_user_by_id(user_id):
+    return User.objects.get(id=user_id)
 
 def search_email(email):
     return User.objects.filter(email=email)[0]
@@ -200,7 +210,14 @@ def login_user(request):
 def is_exists(email):
     return User.objects.filter(email=email).exists()
 
-def chack_form(request):
+
+def is_exists_exclude(email,user_id):
+    return User.objects.filter(email=email).exclude(id=user_id).exists()
+
+
+
+def check_form(request):
+
         errors = User.objects.validator_form(request.POST)
         if len(errors) > 0:
             for key, val in errors.items():
@@ -221,11 +238,12 @@ def get_all_results(user_id):
 
 def get_average_confidence(user_id):
     avg=Result.objects.filter(user__id=user_id).aggregate(a=Avg('confidence_level'))
-    return avg['a']
+    if avg['a']:  
+        return avg['a']
+    return 0
 
 def get_companies():
     res=Result.objects.last()
-    
     company_list = res.nearest_companies.split('%')
     list_of_companies = []
 
@@ -239,8 +257,6 @@ def get_companies():
             'name': name,
             'roles': roles
         })
-
-    print(list_of_companies)
     return list_of_companies
 
 def change_password_check(request):
@@ -270,16 +286,18 @@ def change_info(request):
         email=request.POST['email']
         phone=request.POST['phone']
         location=request.POST['location']
-        avatar=request.POST['avatar_url']
         user=get_user_by_id(request.session['user_id'])
+        new_avatar=request.FILES.get('img')
+        if new_avatar:
+            uploaded_file = new_avatar
+            
+            user.avatar=uploaded_file
         
         user.first_name=first_name
         user.last_name=last_name
         
         user.phone=phone
         user.location=location
-        if avatar:
-            user.avatar=avatar
         if email != user.email:
             if is_exists(email):
                 messages.error(request,'email is already exists',extra_tags="change_info__email")
@@ -289,6 +307,48 @@ def change_info(request):
         user.save()    
         return True
             
+            
+def is_admin(user_id):
+    user=get_user_by_id(user_id)
+    if user.level== 2:
+        return True
+    return False            
+
+def get_all_client():
+    return User.objects.filter(level="1")
+
+def del_user(id):
+    user=get_user_by_id(id)
+    user.delete()
+    return
+
+def modify_user(request, id):
+    object = UserManager()
+    errors = object.validator_edit_info(request.POST)
+    if errors:
+        for key, val in errors.items():
+            messages.error(request, val, extra_tags=f"edit_info__{key}")
+        return False
+    else:
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        location = request.POST['location']
+
+        user = get_user_by_id(id)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.phone = phone
+        user.location = location
+        if is_exists_exclude(email,id):
+            messages.error(request, 'Email already exists', extra_tags="edit_info__email")
+            return False
+        else:
+            user.email = email
+
+        user.save()
+        return True
 
 
 

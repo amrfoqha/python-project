@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect
 from .models import *
 from .integration import analyze_user_data
 from django.contrib import messages
@@ -6,7 +6,6 @@ import os
 from django.core.files.storage import default_storage
 from django.conf import settings
 import json
-from .models import User, Result
 import PyPDF2
 from myproject import settings
 
@@ -26,46 +25,68 @@ def root(request):
     
 
 def view_register(request):
-    
+    if request.session['logged_in']:
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
     return render(request,'registration.html')
 def view_login(request):
     if request.session['logged_in']:
-        return redirect('/view_quze')
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
     return render(request,'login.html')
 
 
 
 
 def register(request):
-    if create_new_user(request):
-        return redirect('/view_login')
+    if request.session['logged_in']:
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
+    if request.method=="POST":    
+        if create_new_user(request):
+            return redirect('/view_login')
     return redirect('/view_register')
 
 
-
 def login(request):
-    if login_user(request):
-        return redirect('/view_quze')
-    return redirect('/view_login')
+    if request.session['logged_in']:
+        if not is_admin(request.session['user_id']):
+            return redirect('/view_quze')
+        return redirect('/view_dashboard')
+    if request.method=="POST":
+        if login_user(request):
+            if is_admin(request.session['user_id']):
+                return redirect('/view_dashboard')
+            return redirect('/view_quze')
+        return redirect('/view_login')
+    return redirect('/')
 
 
 def view_quze(request):
-    
-    if request.session['logged_in'] :    
-        context = {
-            "user":get_user_by_id(request.session['user_id'])
-        }
-        return render(request,'quize.html',context)
-    return redirect('/view_login')
+    if not is_admin(request.session['user_id']):
+        if request.session['logged_in'] :    
+            context = {
+                "user":get_user_by_id(request.session['user_id'])
+            }
+            return render(request,'quize.html',context)
+        return redirect('/view_login')
+    return redirect('/')
 
 
 def submit_quze(request):
-    if chack_form(request):
-        return redirect('/view_result')
-    return redirect('/view_quze')
+    if request.method=="POST":
+        if submit_form(request):
+            return redirect('/view_result')
+        return redirect('/view_quze')
+    return redirect('/')
+
+
 
 def result_view(request):
-    
+   
     if request.session['logged_in']:
         user=get_user_by_id(request.session['user_id'])
         result = Result.objects.filter(user=user).last()
@@ -75,70 +96,72 @@ def result_view(request):
             "result": result,
             "confidence_percentage":int(result.confidence_level*100),
             'companies':get_companies()
-        }
+            }
         return render(request, "result.html", context) 
-    return redirect('/')  
-
+   
 
 
 
 
 
 def submit_form(request):
-    if request.method == "POST":
-        if chack_form(request):
-            user_id = request.session.get('user_id')
-            if not user_id:
-                messages.error(request, "User session expired. Please try again.")
-                return redirect("/view_quze")
-            quiz_data = request.POST.dict()  
-            cv_summary = ""
+    if request.method != "POST":
+        return redirect("/view_quze")
+
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "User session expired. Please try again.")
+        return redirect("/view_quze")
+
+    quiz_data = {k: v for k, v in request.POST.items() if k != 'csrfmiddlewaretoken'}
+    cv_summary = ""
+
+    cv_file = request.FILES.get("cv_file")
+    if cv_file and cv_file.name.endswith(".pdf"):
+        reader = PyPDF2.PdfReader(cv_file)
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                cv_summary += text + "\n"
+
+    if quiz_data:
+        if not check_form(request):
+            return redirect("/view_quze")
+
+    if not quiz_data and not cv_summary:
+        messages.error(request, "Please fill the form or upload a CV.")
+        return redirect("/view_quze")
+
+    result = analyze_user_data(user_id, quiz_data if quiz_data else {}, cv_summary if cv_summary else "")
+
+    try:
+        full_data = json.loads(result.full_json)
+    except Exception:
+        full_data = {}
+
+    return redirect("/view_result")
 
 
-        # قراءة ملف CV إذا موجود
-            if "cv_file" in request.FILES:
-                cv_file = request.FILES["cv_file"]
-                if cv_file.name.endswith(".pdf"):
-                    reader = PyPDF2.PdfReader(cv_file)
-                    for page in reader.pages:
-                        cv_summary += page.extract_text() + "\n"
-
-            if not quiz_data and not cv_summary:
-                messages.error(request, "Please fill the form or upload a CV.")
-                return redirect("/view_quze")
-
-
-            result = analyze_user_data(user_id, quiz_data if quiz_data else {}, cv_summary)
-
-            try:
-                full_data = json.loads(result.full_json)
-            except:
-                full_data = {}
-
-            return redirect('/view_result')
-        else:
-            
-            return redirect('view_quze')
-    return redirect('/view_quze')
     
 
 
 def view_cv_form(request):
-    if request.session['logged_in'] :    
-        context = {
-            "user":get_user_by_id(request.session['user_id'])
-        }
-        return render(request,'cv_form.html',context)
-    return redirect('/view_login')
     
+        if request.session['logged_in'] :    
+            context = {
+                "user":get_user_by_id(request.session['user_id'])
+            }
+            return render(request,'cv_form.html',context)
+        return redirect('/view_login')
+    
+
 def logout(request):
     del request.session['user_id']
-    del request.session['logged_in']
-    
-    
+    del request.session['logged_in']    
     return redirect('/')
 
 def profile(request):
+    
     if 'toggle_form' not in request.session:
         request.session['toggle_form']=False
     if 'change_password' not in request.session:
@@ -154,9 +177,11 @@ def profile(request):
     return redirect('/')
 
 def edit_info(request):
-    if change_info(request):
-        return redirect('/toggle_edit_profile')
-    return redirect('/profile')
+
+        if change_info(request):
+            return redirect('/toggle_edit_profile')
+        return redirect('/profile')
+
 
 def toggle_edit_profile(request):
     request.session['toggle_form']= not request.session['toggle_form']
@@ -173,23 +198,58 @@ def change_password(request):
         return redirect('/profile')
     
 def view_result_by_id(request,result_id):
-    if request.session['logged_in']:
-        user=get_user_by_id(request.session['user_id'])
-        result = Result.objects.get(id=result_id)
+    if not is_admin(request.session['user_id']):
+        if request.session['logged_in']:
+            user=get_user_by_id(request.session['user_id'])
+            result = Result.objects.get(id=result_id)
 
-        context = {
-            "user": user,
-            "result": result,
-            "confidence_percentage":int(result.confidence_level*100),
-            'companies':get_companies()
+            context = {
+                "user": user,
+                "result": result,
+                "confidence_percentage":int(result.confidence_level*100),
+                'companies':get_companies()
+            }
+            return render(request, "result.html", context) 
+        return redirect('/')
+    return redirect('/view_profile')    
+
+def view_dashboard(request):
+    if is_admin(request.session['user_id']):
+        context={
+            'user':get_user_by_id(request.session['user_id']),
+            'all_clients':get_all_client()
         }
+        return render(request,'dashboard.html',context)
+    return redirect('/')
+
+def delete_user(request,id):
+    if is_admin(request.session['user_id']):
+        del_user(id)
+        return redirect('/view_dashboard')
+    return redirect('/')
+
+def view_edit_user(request,id):
+    if is_admin(request.session['user_id']):
+        context={
+            'client':get_user_by_id(id),
+            'user':get_user_by_id(request.session['user_id'])
+        }
+        return render(request,'edit_user.html',context)
+    return redirect('/view_profile')
+
+def edit_user(request):
+    id=request.POST['hidden']
+    if modify_user(request,id):
+        return redirect('/view_dashboard')
+    else:
+        return redirect(f'/view_edit_user/{id}')
+        
         return render(request, "result.html", context) 
     return redirect('/')    
 
 def contact_us(request):
-    user=get_user_by_id(request.session['user_id'])
     context={
-        "user" :user
+        "user" :get_user_by_id(request.session['user_id'])
     }
     return render(request,'contact_us.html',context)
 
