@@ -11,21 +11,18 @@
 </head>
 
 <body class="bg-gray-50">
-    <!-- Navigation Bar -->
     <nav class="bg-[#1e3a8a] py-4 px-4 md:px-16">
         <div class="container mx-auto flex justify-between items-center">
             <a href="/" class="text-white text-xl md:text-2xl font-bold">
                 <h1>CareerPilot</h1>
             </a>
             <div class="text-white flex space-x-4 md:space-x-6">
-                <a href="#" class="hover:text-blue-200 transition">Contact us</a>
+                <a href="/contact_us" class="hover:text-blue-200 transition">Contact us</a>
                 <a href="{% url 'home' %}#who_we_are" class="hover:text-blue-200 transition">Who we are</a>
                 <a href="/" class="hover:text-blue-200 transition">Home</a>
             </div>
         </div>
     </nav>
-
-    <!-- Login Form -->
     <main class="container mx-auto px-4 py-8">
         <form action="login" method="POST" class="flex justify-center items-center min-h-[60vh]">
             {% csrf_token %}

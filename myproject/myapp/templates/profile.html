@@ -61,9 +61,9 @@
   </script>
 </head>
 <body class="relative">
-  <div class="flex flex-wrap justify-between bg-[#1e3a8a] h-auto py-4 px-4 items-center">
-    <a href="/" class="text-white text-2xl font-bold">CareerPilot</a>
-    <div class="flex flex-wrap justify-center items-center gap-4 text-white">
+  <div class="flex flex-wrap justify-between bg-[#1e3a8a] h-auto py-4 px-8 items-center ">
+    <a href="/" class="text-white text-2xl font-bold"><h1>Career<span class="text-amber-300">Pilot</span></h1></a>
+    <div class="flex text-[9px] lg:text-xl md:text-xl font-medium md:flex-row gap-3 md:gap-6 text-white items-center">
       <a href="/contact_us">Contact us</a>
       <a href="{% url 'home' %}#who_we_are">Who we are</a>
       <a href="/">Home</a>
@@ -92,14 +92,14 @@
     </div>
   </div>
 
-  <div class="flex flex-col lg:flex-row justify-around items-start gap-8 mt-8 px-4 {% if request.session.change_password %}blur-sm{% endif %}">
-    <form action="/edit_info" method="post" class=" shadow-md  rounded border-2 border-[#5b73b6] shadow-[#1e3a8a] p-5 w-full max-w-md mx-auto">
+  <div class=" bg-gradient-to-b from-[#1e3a8a] to-gray-800  flex flex-col lg:flex-row justify-around items-start gap-8 pt-8 px-4 {% if request.session.change_password %}blur-sm{% endif %}">
+    <form action="/edit_info" method="post" enctype="multipart/form-data" class=" shadow-md bg-white  rounded border-2  shadow-white p-5 w-full max-w-md mx-auto">
       {% csrf_token %}
       <div class="relative mb-4 text-center mt-6">
-        <img src="{{user.avatar.url}}" class="w-32 h-32 rounded-full object-cover border-4 mx-auto border-blue-500 shadow-lg mb-5">
+        <img src="{{user.avatar.url}}" class="w-52 h-52 rounded-full object-cover border-4 mx-auto border-blue-500 shadow-lg mb-5">
         {% if request.session.toggle_form %}
         <label for="img" class="mb-2 font-semibold text-gray-700">Select image:</label>
-        <input type="file" name="img" class="border border-gray-400 p-2 rounded mb-4">
+        <input type="file" name="img" class="border border-gray-400 p-2 rounded mb-4 ">
         {% endif %}
       </div>
       <div class="flex flex-col items-center mb-4">
@@ -115,7 +115,7 @@
         <h3 class="text-xl text-[#1e3a8a] font-semibold mb-4">Confidence Level</h3>
         <div class="relative w-24 h-24 mx-auto">
           <canvas id="confidenceChart" class="w-full h-full"></canvas>
-          <p class="absolute inset-0 flex items-center justify-center text-xl font-semibold text-[#1e3a8a]">
+          <p class="absolute inset-0 flex items-center justify-center text-[18px] font-semibold text-[#1e3a8a]">
             {{ confidence }}%
           </p>
         </div>
@@ -183,7 +183,7 @@
       {% endif %}
     </form>
 
-    <div class="overflow-x-auto w-full lg:w-2/4  shadow-md rounded border-2 border-[#5b73b6] shadow-[#1e3a8a]">
+    <div class="overflow-y-auto w-full lg:w-2/4  shadow-md rounded border-2 border-[#5b73b6] shadow-[#1e3a8a]">
       <table class="w-full bg-white">
         <thead class="bg-[#1e3a8a]">
           <tr>
@@ -218,7 +218,7 @@
       </div>
       <div class="flex flex-col gap-2">
         <label>Confirm Password:</label>
-        <input type="password" name="confirm_password" class="border rounded-xl p-2">
+        <input type="password" name="confirm_password" class="border rounded-xl p-2 ">
       </div>
       <input type="submit" value="Change password"
         class="cursor-pointer border py-2 px-4 bg-green-700 hover:bg-green-500 text-white rounded-xl mx-auto block mt-6">

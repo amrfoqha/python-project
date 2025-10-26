@@ -95,28 +95,34 @@ class UserManager(models.Manager):
         if len(postData['phone'])<10:
             errors['phone'] = "inValid phone number"
         return errors
+    
     def validator_edit_info(self, postData):
         errors = {}
         if len(postData['first_name']) <= 0 :
             errors['first_name'] = "Name must be filed"
         if len(postData['last_name'])<=0:
             errors['last_name']="Name must be filed"
-            if len(postData['message']) <=0 :
-                errors['message']='message must be filed'
-        return errors
-    
-    def validator_message(self,postData):
-        errors = {}
-        if len(postData['name']) <= 0 :
-            errors['name'] = "Name must be filed"
-        if len(postData['email'])<=0:
-            errors['email']='email must be filled'
-        else:    
-            pattern = re.compile(r'^[a-z.-_A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
-            if not pattern.match(postData['email']):
-                errors['email'] = 'email is invalid'
         if len(postData['phone'])<10:
             errors['phone'] = "inValid phone number"
+        if len(postData['email'])<=0:
+            errors['email']='email must be filled'    
+        return errors
+    
+    def validator_message(self,postData,logged_in):
+        errors = {}
+        if not logged_in : 
+            if len(postData['name']) <= 0 :
+                errors['name'] = "Name must be filed"
+            if len(postData['email'])<=0:
+                errors['email']='email must be filled'
+            else:    
+                pattern = re.compile(r'^[a-z.-_A-Z0-9]+@[a-zA-Z]+.[a-zA-Z]+$')        
+                if not pattern.match(postData['email']):
+                    errors['email'] = 'email is invalid'
+                    
+        if len(postData['message']) <=0 :
+            errors['message']='message must be filed'
+        
         return errors
 
         
@@ -355,13 +361,27 @@ def modify_user(request, id):
 
 
 def create_new_message(request):
-    name=request.POST['name']
-    email=request.POST['email']
-    message=request.POST['message']
-    errors=User.objects.validator_message(request.POST)
+
+    logged_in=request.session['logged_in']
+    if "name" in request.POST:
+        name=request.POST['name']
+    else:
+        user=get_user_by_id(request.session['user_id'])
+        name=f'{user.first_name} {user.last_name}' 
+    if "email" in request.POST:
+        email=request.POST['email']
+    else:
+        user=get_user_by_id(request.session['user_id'])
+        email=user.email
+               
+    errors=Message.objects.validator_message(request.POST,logged_in)
     if len(errors)>0:
         for key,val in errors.items():
             messages.error(request,val,f'message_{key}')
         return False
-    message=Message.objects.create(name=name,email=email,message=message)
+    message=request.POST['message']
+    Message.objects.create(name=name,email=email,message=message)
     return True 
+
+def get_all_messages():
+    return Message.objects.all()

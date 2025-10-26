@@ -25,11 +25,13 @@ def root(request):
     
 
 def view_register(request):
-    if request.session['logged_in']:
-        if not is_admin(request.session['user_id']):
-            return redirect('/view_quze')
-        return redirect('/view_dashboard')
-    return render(request,'registration.html')
+    if 'logged_in' in request.session: 
+        if request.session['logged_in']:
+            if not is_admin(request.session['user_id']):
+                return redirect('/view_quze')
+            return redirect('/view_dashboard')
+        return render(request,'registration.html')
+    return redirect('/')
 def view_login(request):
     if request.session['logged_in']:
         if not is_admin(request.session['user_id']):
@@ -177,7 +179,6 @@ def profile(request):
     return redirect('/')
 
 def edit_info(request):
-
         if change_info(request):
             return redirect('/toggle_edit_profile')
         return redirect('/profile')
@@ -217,7 +218,8 @@ def view_dashboard(request):
     if is_admin(request.session['user_id']):
         context={
             'user':get_user_by_id(request.session['user_id']),
-            'all_clients':get_all_client()
+            'all_clients':get_all_client(),
+            'all_messages':get_all_messages()
         }
         return render(request,'dashboard.html',context)
     return redirect('/')
@@ -248,13 +250,15 @@ def edit_user(request):
     return redirect('/')    
 
 def contact_us(request):
-    context={
-        "user" :get_user_by_id(request.session['user_id'])
-    }
-    return render(request,'contact_us.html',context)
-
+    if request.session['logged_in']:
+        context={
+            "user" :get_user_by_id(request.session['user_id'])
+        }    
+        return render(request,'contact_us.html',context)
+    return render(request,'contact_us.html')
 
 def new_message(request):
+    
     if create_new_message(request):
-        return redirect('/contact_us')
+        return redirect('/')
     return redirect('/contact_us')

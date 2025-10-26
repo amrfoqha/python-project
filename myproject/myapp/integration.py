@@ -18,7 +18,7 @@ Instructions:
 
 JSON structure to return:
 {{
-  "career_recommendation": "",
+  "career_advise": "",
   "confidence_level": 0.0,
   "key_strengths": [],
   "personality_traits": [],
@@ -108,7 +108,7 @@ def analyze_user_data(user_id, quiz_data=None, cv_summary=""):
         # ✅ تخزين النتيجة في قاعدة البيانات
         result = Result.objects.create(
             user=user,
-            career_recommendation=ai_result.get("career_recommendation", "No recommendation found"),
+            career_recommendation=ai_result.get("career_advise", "No recommendation found"),
             reasoning=ai_result.get("reasoning", ""),
             recommended_skills_to_learn=", ".join(ai_result.get("recommended_skills_to_learn", [])),
             confidence_level=float(ai_result.get("confidence_level", 0)) * 100,

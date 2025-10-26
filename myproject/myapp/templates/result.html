@@ -44,36 +44,42 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </head>
 
-<body class="bg-gray-50">
+<body class=" bg-gradient-to-b from-[#1e3a8a] to-gray-800">
 
-<div class="flex flex-wrap justify-between items-center bg-[#1e3a8a] p-4">
-    <a href="/" class="text-white text-2xl font-bold mb-2 md:mb-0">CareerPilot</a>
-    <div class="flex flex-wrap items-center gap-4 md:gap-6 w-full md:w-auto justify-center">
-        <div class="flex flex-wrap gap-4 text-white text-sm md:text-base">
-            <a href="/contact_us">Contact us</a>
-            <a href="{% url 'home' %}#who_we_are">Who we are</a>
-            <a href="/">Home</a>
-            <a href="/view_quze">Retake the Test</a>
-        </div>
-        <div class="relative">
-            <button id="dropdownToggle" class="flex items-center gap-2 px-4 py-2 rounded-lg text-white border border-slate-300 hover:bg-slate-700">
-                <img src="{{user.avatar.url}}" class="w-7 h-7 rounded-full">
-                <span>{{user.last_name}}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-white" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z" clip-rule="evenodd"/>
-                </svg>
-            </button>
-            <ul id="dropdownMenu" class="absolute hidden bg-white shadow-lg py-2 rounded-lg mt-1 z-[1000] min-w-[150px]">
-                <li class="dropdown-item py-2 px-4 hover:bg-slate-100"><a href="/profile">View profile</a></li>
-                <li class="dropdown-item py-2 px-4 hover:bg-slate-100"><a href="/logout">Logout</a></li>
-            </ul>
-        </div>
+<div class="flex flex-wrap justify-between bg-[#1e3a8a] h-auto py-4 px-8 items-center ">
+    <a href="/" class="text-white text-2xl font-bold"><h1>Career<span class="text-amber-300">Pilot</span></h1></a>
+    <div class="flex text-[9px] lg:text-xl md:text-xl font-medium md:flex-row gap-3 md:gap-6 text-white items-center">
+      <a href="/contact_us">Contact us</a>
+      <a href="{% url 'home' %}#who_we_are">Who we are</a>
+      <a href="/">Home</a>
+      <a href="/view_quze">Retake the Test</a>
+      <div class="relative">
+        <button type="button" id="dropdownToggle"
+          class="px-4 py-2 flex items-center rounded-lg text-white text-sm font-medium border border-slate-300 outline-none hover:bg-slate-100/10 cursor-pointer">
+          <img src="{{user.avatar.url}}" class="w-7 h-7 mr-3 rounded-full shrink-0">
+          <span>{{user.last_name}}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-slate-400 inline ml-3" viewBox="0 0 24 24">
+            <path fill-rule="evenodd"
+              d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+              clip-rule="evenodd" />
+          </svg>
+        </button>
+        <ul id="dropdownMenu"
+          class="absolute hidden shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded-lg max-h-96 overflow-auto">
+          <li class="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-600 font-medium text-sm cursor-pointer">
+            <a href="/profile">View profile</a>
+          </li>
+          <li class="dropdown-item py-2.5 px-5 flex items-center hover:bg-slate-100 text-slate-600 font-medium text-sm cursor-pointer">
+            <a href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
     </div>
-</div>
+  </div>
 
 <div class="text-center mt-10 px-4">
-    <h1 class="text-2xl md:text-3xl text-[#1e3a8a] font-medium">Your Profile Analysis Results</h1>
-    <p class="mt-3 text-gray-700">Based on your answers and CV, here is your personalized AI-based career analysis.</p>
+    <h1 class="text-2xl md:text-3xl text-white font-medium">Your Profile Analysis Results</h1>
+    <p class="mt-3 text-white">Based on your answers and CV, here is your personalized AI-based career analysis.</p>
 </div>
 
 <div class="bg-white shadow-md rounded-lg p-5 w-full max-w-3xl mx-auto mt-10">
@@ -104,9 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 </div>
 
-<div class="flex flex-col lg:flex-row justify-evenly gap-6 mt-10 px-4 mb-20">
-    <div class="overflow-x-auto w-full lg:w-1/2">
-        <table class="min-w-full border-collapse border border-gray-200 shadow-md text-center">
+<div class="flex flex-col justify-center   lg:flex-row  lg:mt-10 lg:pl-24 lg:ml-24 mb-20">
+    <div class=" justify-center flex mb-5 lg:w-1/2 ">
+        <table class="w-3/4   bg-white  shadow-md text-center mt-5 ">
             <thead class="bg-gray-100">
                 <tr>
                     <th class="border p-2">Company Name (location)</th>
@@ -130,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </table>
     </div>
     <div class="w-full lg:w-1/2 text-center">
-        <h3 class="text-2xl text-[#1e3a8a] font-semibold mb-4">Skills Overview</h3>
+        <h3 class="text-2xl text-white font-semibold mb-4">Skills Overview</h3>
         <canvas id="skillsDoughnut" class="mx-auto max-w-xs"></canvas>
     </div>
 </div>
@@ -149,7 +155,8 @@ new Chart(ctx, {
             data: data,
             backgroundColor: ['#1e3a8a', '#22c55e'],
             borderColor: ['#1e3a8a', '#22c55e'],
-            borderWidth: 1
+            borderWidth: 1,
+
         }]
     },
     options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
