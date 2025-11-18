@@ -1,7 +1,18 @@
-/__pycache__/
-__pycache__
-/myproject/myapp/migrations/
+# Python cache
 __pycache__/
-db.sqlite3/
-.venv
-.env/
+**/__pycache__/
+
+# Django migrations
+myproject/myapp/migrations/
+
+# SQLite database
+db.sqlite3
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Environment variables
+.env
+
