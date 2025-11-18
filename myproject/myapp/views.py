@@ -99,6 +99,8 @@ def result_view(request):
             "confidence_percentage":int(result.confidence_level*100),
             'companies':get_companies()
             }
+        print(get_companies())
+        print('asdasdasdasdasdasdasdasdasdasdasdasdasd')
         return render(request, "result.html", context) 
    
 
@@ -208,8 +210,9 @@ def view_result_by_id(request,result_id):
                 "user": user,
                 "result": result,
                 "confidence_percentage":int(result.confidence_level*100),
-                'companies':get_companies()
+                'companies':get_companies(result)
             }
+            
             return render(request, "result.html", context) 
         return redirect('/')
     return redirect('/view_profile')    

@@ -88,7 +88,7 @@ def analyze_user_data(user_id, quiz_data=None, cv_summary=""):
         if not ai_output:
             raise ValueError("Empty AI response")
 
-        # استخراج JSON فقط من النص
+        
         start = ai_output.find("{")
         end = ai_output.rfind("}") + 1
         if start == -1 or end == -1:
@@ -105,7 +105,6 @@ def analyze_user_data(user_id, quiz_data=None, cv_summary=""):
             ]
         )
 
-        # ✅ تخزين النتيجة في قاعدة البيانات
         result = Result.objects.create(
             user=user,
             career_recommendation=ai_result.get("career_advise", "No recommendation found"),

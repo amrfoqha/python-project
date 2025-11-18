@@ -248,8 +248,8 @@ def get_average_confidence(user_id):
         return avg['a']
     return 0
 
-def get_companies():
-    res=Result.objects.last()
+def get_companies(res):
+    
     company_list = res.nearest_companies.split('%')
     list_of_companies = []
 
